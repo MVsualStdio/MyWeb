@@ -10,4 +10,4 @@ cd ..
 echo "========================================"
 echo "run web server:"
 # ./testResponse
-# ./web
+./web

@@ -7,8 +7,17 @@
 using namespace std;
 #include <functional>
 
+
+
+
 namespace web{
-    class Response{
+
+    class ResponseCall{
+        virtual std::shared_ptr<Net::HttpResponse> ResRun(Net::HttpRequest request) = 0;
+
+    };
+
+    class Response:public ResponseCall{
         public:
             using ResponseCallBack = std::function<std::shared_ptr<Net::HttpResponse> (Net::HttpRequest&)>;
         private:

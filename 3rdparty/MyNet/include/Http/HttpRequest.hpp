@@ -15,7 +15,7 @@
 #include <map>
 #include <assert.h>
 #include <stdio.h>
-
+#include <unordered_map>
 
 namespace Net{
     using namespace std;
@@ -111,8 +111,23 @@ namespace Net{
         postbody_.assign(start,end);
     }
 
-    const std::string& postBody() const{ 
-        return postbody_; 
+    unordered_map<string,string> postBody() const{ 
+        // std::cout<<postbody_<<std::endl;
+        unordered_map<string,string> res;
+        int first = 0;
+        int pos=0;
+        while(pos<postbody_.size()){
+            int key = postbody_.find('=',pos);
+            int value = postbody_.find('&',key);
+            if(value == -1){
+                value = postbody_.size();
+            }
+            string reskey(pos+postbody_.begin(),key+postbody_.begin());
+            string resvalue(key+postbody_.begin()+1,value+postbody_.begin());
+            res[reskey] = resvalue;
+            pos = value+1;
+        }
+        return res; 
     }
 
     void addHeader(const char* start, const char* colon, const char* end){
