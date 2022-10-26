@@ -13,21 +13,22 @@ using namespace std;
 namespace web{
 
     class ResponseCall{
-        virtual std::shared_ptr<Net::HttpResponse> ResRun(Net::HttpRequest request) = 0;
-
+        public:
+            using ResponseCallBack = std::function<std::shared_ptr<Net::HttpResponse> (Net::HttpRequest&)>;
+            using Ptr = std::shared_ptr<ResponseCall>;
+            virtual std::shared_ptr<Net::HttpResponse> ResRun(Net::HttpRequest request) = 0;
     };
 
     class Response:public ResponseCall{
         public:
-            using ResponseCallBack = std::function<std::shared_ptr<Net::HttpResponse> (Net::HttpRequest&)>;
+            
         private:
             ResponseCallBack callback_;
         public:
             Response() = default;
             Response(ResponseCallBack callback):callback_(callback){};
-            std::shared_ptr<Net::HttpResponse> ResRun(Net::HttpRequest request){
-                return  callback_(request);
-            }
+            static ResponseCall::Ptr newPtr(ResponseCallBack callback);
+            std::shared_ptr<Net::HttpResponse> ResRun(Net::HttpRequest request);
     };
 }
 

@@ -47,12 +47,12 @@ void Route::addStaticSource(string type){
     std::vector<std::string> files;
     if(getAllFiles("./static/"+type,files)){
         for(auto& file:files){
-            addRoute("/"+file,Response([this,file](Net::HttpRequest resp){return render_.SendHtml(file);}));
+            addRoute("/"+file,Response::newPtr([this,file](Net::HttpRequest resp){return render_.SendHtml(file);}));
         }
     }
 }
 
-void Route::addRoute(string oneRoute,Response res){
+void Route::addRoute(string oneRoute,ResponseCall::Ptr res){
     route_[oneRoute] = res;                      
 }
 
@@ -61,6 +61,6 @@ bool Route::isExistRoute(string oneRoute){
     return !(iter == route_.end());
 }
 
-Response Route::getResponse(string path){
+ResponseCall::Ptr Route::getResponse(string path){
     return  route_[path];
 }

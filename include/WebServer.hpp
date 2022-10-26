@@ -25,11 +25,11 @@ namespace web{
                 //std::cout << "Headers " << req.methodString() << " " << req.path() << std::endl;
                 string path = req.path();
                 if(route_.isExistRoute(path)){
-                    Response s =  route_.getResponse(path);
+                    ResponseCall::Ptr s =  route_.getResponse(path);
                     const std::string& connection = req.getHeader("Connection");
                     bool close = connection == "close" ||
                         (req.getVersion() == HttpRequest::kHttp10 && connection != "Keep-Alive");
-                    std::shared_ptr<Net::HttpResponse> Newresp =  s.ResRun(req);
+                    std::shared_ptr<Net::HttpResponse> Newresp =  s->ResRun(req);
                     Newresp->setCloseConnect(close);
                     return Newresp;
                 }
@@ -44,7 +44,7 @@ namespace web{
                 server.start();
                 server.loop();
             }
-            void addRoute(string path, Response res){
+            void addRoute(string path, ResponseCall::Ptr res){
                 route_.addRoute(path,res);
             }
     };

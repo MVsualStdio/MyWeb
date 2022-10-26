@@ -15,14 +15,14 @@ namespace web{
         public:
         private:
             Render render_;
-            unordered_map<string,Response> route_;
+            unordered_map<string,ResponseCall::Ptr> route_;
             void addStaticSource(string dir);
             static bool getAllFiles(const std::string& dir_in, std::vector<std::string>& files);
         public:
             Route();
-            void addRoute(string oneRoute,Response res);
+            void addRoute(string oneRoute,ResponseCall::Ptr res);
             bool isExistRoute(string oneRoute);
-            Response getResponse(string path);
+            ResponseCall::Ptr getResponse(string path);
     };
 }
 

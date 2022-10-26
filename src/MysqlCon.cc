@@ -26,4 +26,4 @@ bool MysqlCon::addQuery(const std::string& db,const std::string& table,const std
         ret = true;
     }
     return ret;
-}
+}  
