@@ -14,7 +14,6 @@ namespace web{
             int filefd_;
             char* buffer_;
             size_t pathLen_;
-            
         private:
             void UnmapFile();
             int mmapFile(string file);

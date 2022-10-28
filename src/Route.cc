@@ -41,6 +41,7 @@ bool Route::getAllFiles(const std::string& dir_in, std::vector<std::string>& fil
 Route::Route(){
    addStaticSource("css");
    addStaticSource("js");
+
 }
 
 void Route::addStaticSource(string type){
@@ -48,6 +49,15 @@ void Route::addStaticSource(string type){
     if(getAllFiles("./static/"+type,files)){
         for(auto& file:files){
             addRoute("/"+file,Response::newPtr([this,file](Net::HttpRequest resp){return render_.SendHtml(file);}));
+        }
+    }
+}
+
+void Route::addSourceDir(string dir){
+    std::vector<std::string> files;
+    if(getAllFiles("./static/"+dir,files)){
+        for(auto& file:files){
+            addRoute("/"+file,Response::newPtr([this,file,dir](Net::HttpRequest resp){return render_.SendHtml("./static/"+dir+"/"+file);}));
         }
     }
 }

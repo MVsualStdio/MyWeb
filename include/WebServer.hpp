@@ -22,7 +22,7 @@ namespace web{
         private:
             Route route_;
             std::shared_ptr<Net::HttpResponse> onRequest(const HttpRequest& req){
-                //std::cout << "Headers " << req.methodString() << " " << req.path() << std::endl;
+                std::cout << "Headers " << req.methodString() << " " << req.path() << std::endl;
                 string path = req.path();
                 if(route_.isExistRoute(path)){
                     ResponseCall::Ptr s =  route_.getResponse(path);
@@ -46,6 +46,9 @@ namespace web{
             }
             void addRoute(string path, ResponseCall::Ptr res){
                 route_.addRoute(path,res);
+            }
+            void addSouce(string dir){
+                route_.addSourceDir(dir);
             }
     };
 }

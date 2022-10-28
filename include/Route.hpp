@@ -20,6 +20,7 @@ namespace web{
             static bool getAllFiles(const std::string& dir_in, std::vector<std::string>& files);
         public:
             Route();
+            void addSourceDir(std::string dir);
             void addRoute(string oneRoute,ResponseCall::Ptr res);
             bool isExistRoute(string oneRoute);
             ResponseCall::Ptr getResponse(string path);

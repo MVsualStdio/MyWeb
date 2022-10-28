@@ -11,7 +11,8 @@ using namespace web;
 
 int Render::setBuffer(string path){
     path_ = path;
-    auto pos = path_.find('.');
+    auto pos = path_.find('.',1);
+    
     if(pos != path_.length()){
         std::string suffix(path_.begin()+pos,path_.end());
         auto iter = RenderType::SUFFIX_TYPE.find(suffix);
@@ -19,12 +20,15 @@ int Render::setBuffer(string path){
             pathType_ = iter->second;
         }
     }
+
     if(buffer_){
         UnmapFile();
     }
+
     string openPath ;
     getPath(openPath);
     filefd_ = mmapFile(openPath);
+    
     return filefd_;
 }
 
@@ -50,12 +54,12 @@ int Render::mmapFile(string file){
         //  建立映射
         buffer_ = (char *) mmap(NULL, pathLen_, PROT_READ, MAP_PRIVATE, fd, 0);
     }
+
     return fd;
 }
 
 
 void Render::getPath(string& path){
-    
     if(pathType_ == "text/html"){
         path = "./static/html/"+path_;
     }
@@ -67,9 +71,13 @@ void Render::getPath(string& path){
     else if(pathType_ == "text/javascript"){
         path = "./static/js/"+path_;
     }
+    else{
+        path = path_;
+    }
 }
 
 void Render::setResp(std::shared_ptr<Net::HttpResponse> resp,HttpResponse::HttpStatusCode code){
+        
     if(filefd_>0){
         resp->setStatusCode(code);
         switch (code){
@@ -83,7 +91,9 @@ void Render::setResp(std::shared_ptr<Net::HttpResponse> resp,HttpResponse::HttpS
                 break;
         }
         resp->setContentType(pathType_);
-        resp->setBody(buffer_);
+        if(pathLen_>0){
+            resp->setBody(std::string(buffer_,buffer_ + pathLen_));
+        }
     }
     else{
         resp->setStatusCode(HttpResponse::K404NotFound);
@@ -120,6 +130,7 @@ std::shared_ptr<Net::HttpResponse> Render::SendHtml(string path){
     filefd_ = setBuffer(path);
     setResp(resp,HttpResponse::K200Ok);
     close(filefd_);
+
     UnmapFile();
     return resp;
 }
