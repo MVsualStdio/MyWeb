@@ -46,25 +46,31 @@
 
         <!-- 右侧内容详情 -->
         <div class="right">
-            <!-- .blog 对应一个博客 -->
-            <div class="blog">
-                <!-- 博客标题 -->
-                <div class="title">
-                    我的第一篇博客
-                </div>
-                <!-- 博客发布时间 -->
-                <div class="date">
-                    2022-05-05 15:00:00
-                </div>
-                <!-- 博客摘要 -->
-                <div class="desc">
-                    从今天起，我要认真写博客，Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit fugit libero deleniti a distinctio exercitationem mollitia adipisci repudiandae aliquid reiciendis, quae consequatur laboriosam illum et dicta iure, error eligendi iusto?
-                </div>
-                <!-- ">>" 转义 -->
-                <a href="#">查看全文 &gt;&gt; </a>
+            <div class = "blog-title">
+                <h3> 文章 </h3>
             </div>
+            <div class="blog-Lists">
+                <ol>
+                    <li v-for="site in sites">
+                      {{ site.name }}
+                    </li>
+                </ol>
+            </div>
+
         </div>
     </div>
 
+<script>
+new Vue({
+    el: '#blog-Lists',
+    data: {
+    sites: [
+        { name: 'Runoob' },
+        { name: 'Google' },
+        { name: 'Taobao' }
+    ]
+    }
+})
+</script>
 </body>
 </html>

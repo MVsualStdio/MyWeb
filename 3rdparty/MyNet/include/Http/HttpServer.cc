@@ -49,9 +49,12 @@ void HttpServer::onMessage(Connectserver* pCon, Buffer* pBuf){
 void HttpServer::onRequest(Connectserver* pCon, const HttpRequest& req){
     std::shared_ptr<Net::HttpResponse> response =  httpCallback_(req);
     if(response){
-        Buffer buf;
-        response->toBuffer(&buf);
-        buf.writeConnect(pCon);
+        std::vector<std::shared_ptr<Buffer>> bufs;
+        response->toBuffer(bufs);
+        for(auto& buf : bufs ){
+            buf->writeConnect(pCon);
+        }
+
         if (response->closeConnection()){
             pCon->serverClose();
         }

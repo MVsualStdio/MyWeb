@@ -69,10 +69,10 @@ int Buffer::read(char* data,int length){
     }
     int curIndex = readPos;
     for (int i = 0; i < length; i++) {
-        curIndex = (readPos + i) % dataSize;
+        curIndex = readPos + i;
         memcpy(data + i,  buffer + curIndex, 1);
     }
-    readPos = (curIndex + 1) % dataSize;
+    readPos = curIndex + 1;
     return length;
 }
 
@@ -85,11 +85,11 @@ int Buffer::writeBuffer(const char* data,int length){
 
     int curIndex = writePos;
     for(int i=0;i<length;++i){
-        curIndex = (writePos + i) % dataSize;
+        curIndex = writePos + i;
         memcpy(buffer + curIndex,data + i, 1);
     }
     
-    writePos = (curIndex+1)%dataSize;
+    writePos = curIndex+1;
 
     // std::cout<<"length"<<length<<std::endl;
     // std::cout<<"size:  "<<getUnreadSize()<<std::endl;
@@ -108,19 +108,17 @@ int Buffer::writeConnect(Connectserver* con){
     int total_sent_num = 0;
     while (getUnreadSize() > 0) {
         int cur_send_len = writePos - readPos;
-        if (readPos > writePos) {
-            cur_send_len = capacity - readPos;
-        }
-        size_t writeNum = ::write(fd, buffer + readPos, cur_send_len);
-        if (writeNum == 0) {
-            if (errno == EINTR) {
+
+        ssize_t writeNum = ::write(fd, buffer + readPos, cur_send_len);
+        if (writeNum <= 0 ) {
+            if (errno == EINTR || errno == EAGAIN) {
                 continue;
             } else {
                 // 缓冲区满了，或者写入报错，直接退出
                 break;
             }
         }
-        readPos = (readPos + writeNum) % dataSize;
+        readPos = readPos + writeNum;
         total_sent_num += writeNum;
   }
   return total_sent_num;
@@ -184,10 +182,14 @@ void Buffer::retrieve(int len){
         return;
     }
     int curIndex = readPos;
-    readPos = (curIndex+len)%dataSize;
+    readPos = curIndex+len;
 }
 
 void Buffer::retrieveUntil(const char* newRead){
     int len = newRead - peek();
     retrieve(len);
+}
+
+int Buffer::maxLength(){
+    return maxCapacity - capacity;
 }

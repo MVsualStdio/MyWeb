@@ -2,6 +2,7 @@
 #define HTTPRESPONSE_H
 #include <map>
 #include <string>
+#include <memory>
 #include "../Buffer/Buffer.hpp"
 namespace Net{
     class HttpResponse{
@@ -24,7 +25,7 @@ namespace Net{
                 {header[key]=value;}
             void setBody(const std::string& _body)
                 {body=_body;}
-            void toBuffer(Buffer* buffer);
+            void toBuffer(std::vector<std::shared_ptr<Buffer>>& buffer);
             void setContentType(const std::string& type)
                 {addHeader("Content-Type", type);}
             void setStatusCode(HttpStatusCode code){statusCode = code;}

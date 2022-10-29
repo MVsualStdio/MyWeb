@@ -16,7 +16,7 @@ html, body {
 body {
     background-color:#100000;
     background-image: url(repeated-square-dark.png); 
-    background-repeat: repeat;
+    background-repeat: repeat; 
 }
 
 /* 导航栏 */
@@ -61,7 +61,7 @@ body {
 /* 这里是版心相关的样式 */
 .container {
     /* 版心不是和窗口一样宽的 */
-    width: 1000px;
+    width: 1100px;
     
     /* 这个写法中 左右两侧必须有空格 不能没有(如果没有 可能无法被浏览器识别)
     这个 calc 是 CSS3 里面提供的一个内置的函数，平时看到的大部分的 CSS 都是 CSS2 这个标准中规定的，但是 CSS3 
@@ -78,18 +78,26 @@ body {
 /* 左侧样式 */
 .container .left {
     height: 100%;
-    width: 200px;
-    /* background-color: orange; */
+    width: 295px;
+    background-color: orange;
 }
+
+
 
 /* 右侧样式 */
 .container .right {
     height: 100%;
-    width: 795px; /* 左右之间留出   一点 */
+    width: 800px; /* 左右之间留出   一点 */
     /* background-color: blueviolet; */
 
     background-color: rgba(255, 255, 255, 0.8);
     border-radius: 10px;
+}
+
+.container .right .blog-title{
+    text-align: center;
+    padding: 10px;
+    font-size:30px;
 }
 
 /* card 的样式 */
@@ -102,6 +110,7 @@ body {
 }
 
 .card img {
+    margin-left: 45px;
     width: 140px; /* 左右留 30px */
     height: 140px;
     border-radius: 50%;
