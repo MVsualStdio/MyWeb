@@ -104,11 +104,11 @@ void Render::setResp(std::shared_ptr<Net::HttpResponse> resp,HttpResponse::HttpS
 }
 
 
-std::shared_ptr<Net::HttpResponse> Render::SendContent(string content){
+std::shared_ptr<Net::HttpResponse> Render::SendContent(string content,RenderType::ResponseType type){
     std::shared_ptr<Net::HttpResponse> resp(new Net::HttpResponse(true));
     resp->setStatusCode(HttpResponse::K200Ok);
     resp->setStatusMessage("OK");
-    resp->setContentType("text/html");
+    resp->setContentType(RenderType::ResponseTypeMap.find(type)->second);
     resp->setBody(content);
     return resp;
 }

@@ -6,6 +6,15 @@
 namespace 
     web{
         namespace RenderType{
+            
+            enum ResponseType{
+                json
+            };
+
+            const std::map<ResponseType,std::string> ResponseTypeMap{
+                {ResponseType::json,"application/json"}
+            };
+
             const std::unordered_map<std::string, std::string> SUFFIX_TYPE = {
                 { ".html",  "text/html" },
                 { ".xml",   "text/xml" },

@@ -10,7 +10,7 @@
 using namespace web;
 
 
-bool Route::getAllFiles(const std::string& dir_in, std::vector<std::string>& files) {
+bool Route::getAllFiles(const std::string& dir_in, std::vector<std::string>& files,std::string root) {
     if (dir_in.empty()) {
         
         return false;
@@ -30,7 +30,14 @@ bool Route::getAllFiles(const std::string& dir_in, std::vector<std::string>& fil
         if (p->d_name[0] != '.') {
             std::string name =  std::string(p->d_name);
             stat(name.c_str(), &st);
-            files.push_back(name);
+            if (S_ISDIR(st.st_mode)) {
+                getAllFiles(dir_in+"/"+name, files,name+"/");
+            }
+            else{
+                // std::cout<<"root name: "<<root+name<<std::endl;
+                files.push_back(root+name);
+            }
+            
         }
     }
     closedir(open_dir);
@@ -46,18 +53,20 @@ Route::Route(){
 
 void Route::addStaticSource(string type){
     std::vector<std::string> files;
-    if(getAllFiles("./static/"+type,files)){
+    if(getAllFiles("./static/"+type,files,"")){
         for(auto& file:files){
             addRoute("/"+file,Response::newPtr([this,file](Net::HttpRequest resp){return render_.SendHtml(file);}));
+            // std::cout<<file<<std::endl;
         }
     }
 }
 
 void Route::addSourceDir(string dir){
     std::vector<std::string> files;
-    if(getAllFiles("./static/"+dir,files)){
+    if(getAllFiles("./static/"+dir,files,"")){
         for(auto& file:files){
             addRoute("/"+file,Response::newPtr([this,file,dir](Net::HttpRequest resp){return render_.SendHtml("./static/"+dir+"/"+file);}));
+
         }
     }
 }

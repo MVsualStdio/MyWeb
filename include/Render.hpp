@@ -3,6 +3,7 @@
 #include <unordered_map>
 #include "Http/HttpResponse.hpp"
 #include <memory>
+#include "RenderType.hpp"
 using namespace std;
 
 
@@ -23,7 +24,7 @@ namespace web{
         public:
             Render() = default;
             std::shared_ptr<Net::HttpResponse> SendHtml(string path);
-            std::shared_ptr<Net::HttpResponse> SendContent(string content);
+            std::shared_ptr<Net::HttpResponse> SendContent(string content,RenderType::ResponseType type);
             std::shared_ptr<Net::HttpResponse> sendRedirect(string path);
     };
 }

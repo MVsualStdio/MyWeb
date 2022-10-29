@@ -4,9 +4,11 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>博客列表</title>
+    <title>Blog of Xie</title>
     <link rel="stylesheet" href="common.css">
     <link rel="stylesheet" href="blog_list.css">
+    <script src="vue.js"></script>
+    <script src="axio.js"></script>
 </head>
 <body>
     
@@ -49,12 +51,11 @@
             <div class = "blog-title">
                 <h3> 文章 </h3>
             </div>
-            <div class="blog-Lists">
-                <ol>
-                    <li v-for="site in sites">
-                      {{ site.name }}
-                    </li>
-                </ol>
+            <div id="blog-Lists">
+                <!-- <ol > -->
+                    {{ blogLists.name }}
+                <!-- </ol> -->
+
             </div>
 
         </div>
@@ -63,12 +64,19 @@
 <script>
 new Vue({
     el: '#blog-Lists',
-    data: {
-    sites: [
-        { name: 'Runoob' },
-        { name: 'Google' },
-        { name: 'Taobao' }
-    ]
+    data() {
+        return{
+            blogLists: null
+        }
+
+    },
+    mounted () {
+        axios
+        .get('blog-list')
+        .then(response => (this.blogLists = response.data))
+        .catch(function (error) { // 请求失败处理
+            console.log(error);
+        });
     }
 })
 </script>
