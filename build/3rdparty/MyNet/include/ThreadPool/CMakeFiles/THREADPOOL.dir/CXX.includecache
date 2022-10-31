@@ -1,0 +1,46 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/ubuntu/MyWeb/3rdparty/MyNet/include/Task/Task.hpp
+utility
+-
+functional
+-
+iostream
+-
+thread
+-
+WorkItem.hpp
+/home/ubuntu/MyWeb/3rdparty/MyNet/include/Task/WorkItem.hpp
+
+/home/ubuntu/MyWeb/3rdparty/MyNet/include/Task/WorkItem.hpp
+
+/home/ubuntu/MyWeb/3rdparty/MyNet/include/ThreadPool/ThreadPool.cc
+ThreadPool.hpp
+/home/ubuntu/MyWeb/3rdparty/MyNet/include/ThreadPool/ThreadPool.hpp
+
+/home/ubuntu/MyWeb/3rdparty/MyNet/include/ThreadPool/ThreadPool.hpp
+thread
+-
+queue
+-
+memory
+-
+utility
+-
+mutex
+-
+unistd.h
+-
+condition_variable
+-
+../Task/Task.hpp
+/home/ubuntu/MyWeb/3rdparty/MyNet/include/Task/Task.hpp
+../Task/WorkItem.hpp
+/home/ubuntu/MyWeb/3rdparty/MyNet/include/Task/WorkItem.hpp
+

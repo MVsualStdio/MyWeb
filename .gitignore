@@ -1,7 +1,6 @@
-build
 .vscode
-testResponse
-web
-bench.sh
+static-My
 test
-testSql
+./bench.sh
+./web
+hexo

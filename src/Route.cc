@@ -6,13 +6,14 @@
 #include <dirent.h>
 #include <sys/stat.h>
 #include <sys/types.h>
+#include "Config.hpp"
 #include <unistd.h>
 using namespace web;
 
 
 bool Route::getAllFiles(const std::string& dir_in, std::vector<std::string>& files,std::string root) {
+    std::string curDir = sourcePath + root;
     if (dir_in.empty()) {
-        
         return false;
     }
     struct stat s;
@@ -29,9 +30,12 @@ bool Route::getAllFiles(const std::string& dir_in, std::vector<std::string>& fil
         struct stat st;
         if (p->d_name[0] != '.') {
             std::string name =  std::string(p->d_name);
-            stat(name.c_str(), &st);
+            //std::cout<<"con: "<<curDir+name<<std::endl;
+
+            stat((curDir+name).c_str(), &st);
             if (S_ISDIR(st.st_mode)) {
-                getAllFiles(dir_in+"/"+name, files,name+"/");
+                //std::cout<<"dir:"<<(sourcePath+name)<<std::endl;
+                getAllFiles(curDir+name+"/", files,root+name+"/");
             }
             else{
                 // std::cout<<"root name: "<<root+name<<std::endl;
@@ -46,30 +50,27 @@ bool Route::getAllFiles(const std::string& dir_in, std::vector<std::string>& fil
 
 
 Route::Route(){
-   addStaticSource("css");
-   addStaticSource("js");
+
+    sourcePath = Config::SourceDir;
+    
+    std::cout<<sourcePath<<std::endl;
+//    addStaticSource("css");
+//    addStaticSource("js");
+    addStaticSource();
 
 }
 
-void Route::addStaticSource(string type){
+void Route::addStaticSource(){
     std::vector<std::string> files;
-    if(getAllFiles("./static/"+type,files,"")){
+    if(getAllFiles(sourcePath,files,"")){
         for(auto& file:files){
-            addRoute("/"+file,Response::newPtr([this,file](Net::HttpRequest resp){return render_.SendHtml(file);}));
-            // std::cout<<file<<std::endl;
+            std::string loc(file);
+            addRoute("/"+loc,Response::newPtr([this,loc](Net::HttpRequest resp){return render_.SendHtml(loc);}));
+            std::cout<<"loc:"<<loc<<std::endl;
         }
     }
 }
 
-void Route::addSourceDir(string dir){
-    std::vector<std::string> files;
-    if(getAllFiles("./static/"+dir,files,"")){
-        for(auto& file:files){
-            addRoute("/"+file,Response::newPtr([this,file,dir](Net::HttpRequest resp){return render_.SendHtml("./static/"+dir+"/"+file);}));
-
-        }
-    }
-}
 
 void Route::addRoute(string oneRoute,ResponseCall::Ptr res){
     route_[oneRoute] = res;                      

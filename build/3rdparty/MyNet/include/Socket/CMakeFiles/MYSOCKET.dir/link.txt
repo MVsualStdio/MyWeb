@@ -1,0 +1,2 @@
+/usr/bin/ar qc libMYSOCKET.a  CMakeFiles/MYSOCKET.dir/Channel.cc.o CMakeFiles/MYSOCKET.dir/Connectserver.cc.o CMakeFiles/MYSOCKET.dir/Epoll.cc.o CMakeFiles/MYSOCKET.dir/Epolloop.cc.o CMakeFiles/MYSOCKET.dir/Tcpserver.cc.o
+/usr/bin/ranlib libMYSOCKET.a

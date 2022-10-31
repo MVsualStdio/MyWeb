@@ -5,6 +5,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR})
 cmake_minimum_required(VERSION 3.1)
 
 add_subdirectory(3rdparty/MyNet)
+include_directories(3rdparty)
 # add_subdirectory(3rdparty/mysql-connector-cpp)
 include_directories(3rdparty/MyNet/include)
 include_directories(include)

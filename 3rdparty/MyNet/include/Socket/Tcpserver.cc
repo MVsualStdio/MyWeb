@@ -50,6 +50,7 @@ void Tcpserver::serverRead(){
                     << conn_fd;
         fcntl(conn_fd, F_SETFL, O_NONBLOCK);
         conList[conn_fd] = std::shared_ptr<Connectserver>(new Connectserver(conn_fd,conloop[rand()%THREAD_NUM]));
+        //conList[conn_fd] = std::shared_ptr<Connectserver>(new Connectserver(conn_fd,loop));
         conList[conn_fd]->Coninit();
         conList[conn_fd]->setUser(user);
         conList[conn_fd]->connectEstablished(); 

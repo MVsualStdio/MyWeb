@@ -11,7 +11,7 @@ using namespace web;
 
 int Render::setBuffer(string path){
     path_ = path;
-    auto pos = path_.find('.',1);
+    auto pos = path_.find_last_of('.');
     
     if(pos != path_.length()){
         std::string suffix(path_.begin()+pos,path_.end());
@@ -27,6 +27,7 @@ int Render::setBuffer(string path){
 
     string openPath ;
     getPath(openPath);
+    //std::cout<<openPath<<std::endl;
     filefd_ = mmapFile(openPath);
     
     return filefd_;
@@ -60,20 +61,20 @@ int Render::mmapFile(string file){
 
 
 void Render::getPath(string& path){
-    if(pathType_ == "text/html"){
-        path = "./static/html/"+path_;
-    }
+    // if(pathType_ == "text/html"){
+    //     path = "./static/html/"+path_;
+    // }
     
-    else if(pathType_ == "text/css"){
-        path = "./static/css/"+path_;
-    }
+    // else if(pathType_ == "text/css"){
+    //     path = "./static/css/"+path_;
+    // }
 
-    else if(pathType_ == "text/javascript"){
-        path = "./static/js/"+path_;
-    }
-    else{
-        path = path_;
-    }
+    // else if(pathType_ == "text/javascript"){
+    //     path = "./static/js/"+path_;
+    // }
+    // else{
+    path = "./static/" + path_;
+    //}
 }
 
 void Render::setResp(std::shared_ptr<Net::HttpResponse> resp,HttpResponse::HttpStatusCode code){

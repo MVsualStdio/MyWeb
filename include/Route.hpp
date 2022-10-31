@@ -15,9 +15,10 @@ namespace web{
         public:
         private:
             Render render_;
+            std::string sourcePath;
             unordered_map<string,ResponseCall::Ptr> route_;
-            void addStaticSource(string dir);
-            static bool getAllFiles(const std::string& dir_in, std::vector<std::string>& files,std::string root);
+            void addStaticSource();
+            bool getAllFiles(const std::string& dir_in, std::vector<std::string>& files,std::string root);
         public:
             Route();
             void addSourceDir(std::string dir);

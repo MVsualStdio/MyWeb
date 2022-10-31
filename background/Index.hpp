@@ -14,7 +14,7 @@ namespace web{
 
             }
             std::shared_ptr<Net::HttpResponse> ResRun(Net::HttpRequest req){
-                
+                //blog-app/
                 return GetRender->SendHtml("index.html");
             }
     };
