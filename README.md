@@ -2,12 +2,12 @@
 #### 介绍：
 1. 拥有三个线程，一个TCP Accept,2个处理http读写任务线程
 2. 支持Get，Post方法，post只支持一种回应
-3. static文件夹，包括html，css，js，静态文件分别写入对应文件夹
+3. 静态文件需要放在static文件夹中。
 4. 3rdparty中的MyNet模仿现成的muduo等网络库mini版本。
 5. web.cc是入口函数 run.sh是启动命令，除了std未采用其他库。
 6. http端口6868，之后用json解析(todo)
 7. sql连接
-8. psot支持多种回应 (todo)  
+8. psot支持json 和 文本
 9. 支持hexo的前端生成
 #### 环境：
 - Linux16.04 云服务器
