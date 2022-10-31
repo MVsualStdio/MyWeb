@@ -1,2 +1,0 @@
-/usr/bin/ar qc libTHREADPOOL.a  CMakeFiles/THREADPOOL.dir/ThreadPool.cc.o
-/usr/bin/ranlib libTHREADPOOL.a

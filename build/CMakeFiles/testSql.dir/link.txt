@@ -1,1 +1,0 @@
-/usr/bin/c++  -std=c++11 -O3 -pthread  -rdynamic CMakeFiles/testSql.dir/test/testSql.cc.o  -o ../testSql  -Wl,-rpath,/home/ubuntu/MyWeb/3rdparty/mysql-connector-c++-8.0.31/lib64 ../3rdparty/mysql-connector-c++-8.0.31/lib64/libmysqlcppconn8.so 

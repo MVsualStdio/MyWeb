@@ -1,6 +1,6 @@
 .vscode/
+build/
 static-My/
 test/
 bench.sh
 web
-build/
