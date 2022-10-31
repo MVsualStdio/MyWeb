@@ -8,13 +8,14 @@
 #include "Response.hpp"
 #include "Http/HttpResponse.hpp"
 #include "Render.hpp"
+#include "RenderPool.hpp"
 using namespace std;
 
 namespace web{
     class Route{
         public:
         private:
-            Render render_;
+            //Render render_;
             std::string sourcePath;
             unordered_map<string,ResponseCall::Ptr> route_;
             void addStaticSource();

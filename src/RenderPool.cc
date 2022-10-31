@@ -17,7 +17,9 @@ std::shared_ptr<Render> RenderPool::getRender(){
         for(int i=0;i<poolSize_;++i){
             if(renderPool_[i].use_count() == 1){
                 res = renderPool_[i];
+                //std::cout<<i<<std::endl;
                 break;
+
             }
         }
     }

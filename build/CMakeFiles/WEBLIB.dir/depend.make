@@ -93,6 +93,7 @@ CMakeFiles/WEBLIB.dir/src/Route.cc.o: ../3rdparty/MyNet/include/Http/HttpRequest
 CMakeFiles/WEBLIB.dir/src/Route.cc.o: ../3rdparty/MyNet/include/Http/HttpResponse.hpp
 CMakeFiles/WEBLIB.dir/src/Route.cc.o: ../include/Config.hpp
 CMakeFiles/WEBLIB.dir/src/Route.cc.o: ../include/Render.hpp
+CMakeFiles/WEBLIB.dir/src/Route.cc.o: ../include/RenderPool.hpp
 CMakeFiles/WEBLIB.dir/src/Route.cc.o: ../include/RenderType.hpp
 CMakeFiles/WEBLIB.dir/src/Route.cc.o: ../include/Response.hpp
 CMakeFiles/WEBLIB.dir/src/Route.cc.o: ../include/Route.hpp

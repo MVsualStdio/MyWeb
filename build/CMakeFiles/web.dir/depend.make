@@ -93,6 +93,7 @@ CMakeFiles/web.dir/web.cc.o: ../3rdparty/nlohmann/json_fwd.hpp
 CMakeFiles/web.dir/web.cc.o: ../3rdparty/nlohmann/ordered_map.hpp
 CMakeFiles/web.dir/web.cc.o: ../3rdparty/nlohmann/thirdparty/hedley/hedley.hpp
 CMakeFiles/web.dir/web.cc.o: ../3rdparty/nlohmann/thirdparty/hedley/hedley_undef.hpp
+CMakeFiles/web.dir/web.cc.o: ../background/Archives.hpp
 CMakeFiles/web.dir/web.cc.o: ../background/BlogIndex.hpp
 CMakeFiles/web.dir/web.cc.o: ../background/Index.hpp
 CMakeFiles/web.dir/web.cc.o: ../background/Login.hpp

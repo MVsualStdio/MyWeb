@@ -65,8 +65,16 @@ void Route::addStaticSource(){
     if(getAllFiles(sourcePath,files,"")){
         for(auto& file:files){
             std::string loc(file);
-            addRoute("/"+loc,Response::newPtr([this,loc](Net::HttpRequest resp){return render_.SendHtml(loc);}));
-            std::cout<<"loc:"<<loc<<std::endl;
+            int pos = 0;
+            if(loc.substr(loc.size()-10,loc.size()) == "index.html"){
+                addRoute("/"+loc.substr(0,loc.size()-10),Response::newPtr([this,loc,pos](Net::HttpRequest resp){return GetRender->SendHtml(loc);}));
+                std::cout<<loc.substr(0,loc.size()-10)<<std::endl;
+            }
+            else{
+                addRoute("/"+loc,Response::newPtr([this,loc](Net::HttpRequest resp){return GetRender->SendHtml(loc);}));
+                std::cout<<loc<<std::endl;
+            }
+            // std::cout<<"loc:"<<loc<<std::endl;
         }
     }
 }

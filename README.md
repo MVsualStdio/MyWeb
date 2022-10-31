@@ -6,8 +6,9 @@
 4. 3rdparty中的MyNet模仿现成的muduo等网络库mini版本。
 5. web.cc是入口函数 run.sh是启动命令，除了std未采用其他库。
 6. http端口6868，之后用json解析(todo)
-7. sql连接 (todo)
+7. sql连接
 8. psot支持多种回应 (todo)  
+9. 支持hexo的前端生成
 #### 环境：
 - Linux16.04 云服务器
 - cmake

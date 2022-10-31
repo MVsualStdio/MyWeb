@@ -94,6 +94,7 @@ CMakeFiles/WEBLIB.dir/src/Route.cc.o
  ../3rdparty/MyNet/include/Http/HttpResponse.hpp
  ../include/Config.hpp
  /home/ubuntu/MyWeb/include/Render.hpp
+ /home/ubuntu/MyWeb/include/RenderPool.hpp
  /home/ubuntu/MyWeb/include/RenderType.hpp
  /home/ubuntu/MyWeb/include/Response.hpp
  /home/ubuntu/MyWeb/include/Route.hpp

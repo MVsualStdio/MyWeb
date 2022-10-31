@@ -1304,6 +1304,12 @@ stdint.h
 
 ../3rdparty/nlohmann/thirdparty/hedley/hedley_undef.hpp
 
+../background/Archives.hpp
+web.hpp
+../background/web.hpp
+Http/HttpRequest.hpp
+../background/Http/HttpRequest.hpp
+
 ../background/BlogIndex.hpp
 web.hpp
 ../background/web.hpp
@@ -1413,6 +1419,8 @@ Http/HttpResponse.hpp
 ../include/Http/HttpResponse.hpp
 Render.hpp
 ../include/Render.hpp
+RenderPool.hpp
+../include/RenderPool.hpp
 
 ../include/WebServer.hpp
 Response.hpp
@@ -1463,4 +1471,6 @@ Login.hpp
 /home/ubuntu/MyWeb/Login.hpp
 Index.hpp
 /home/ubuntu/MyWeb/Index.hpp
+Archives.hpp
+/home/ubuntu/MyWeb/Archives.hpp
 

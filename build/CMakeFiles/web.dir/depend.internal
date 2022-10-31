@@ -94,6 +94,7 @@ CMakeFiles/web.dir/web.cc.o
  ../3rdparty/nlohmann/ordered_map.hpp
  ../3rdparty/nlohmann/thirdparty/hedley/hedley.hpp
  ../3rdparty/nlohmann/thirdparty/hedley/hedley_undef.hpp
+ ../background/Archives.hpp
  ../background/BlogIndex.hpp
  ../background/Index.hpp
  ../background/Login.hpp

@@ -84,6 +84,16 @@ memory
 RenderType.hpp
 /home/ubuntu/MyWeb/include/RenderType.hpp
 
+/home/ubuntu/MyWeb/include/RenderPool.hpp
+Render.hpp
+/home/ubuntu/MyWeb/include/Render.hpp
+condition_variable
+-
+mutex
+-
+queue
+-
+
 /home/ubuntu/MyWeb/include/RenderType.hpp
 unordered_map
 -
@@ -119,6 +129,8 @@ Http/HttpResponse.hpp
 /home/ubuntu/MyWeb/include/Http/HttpResponse.hpp
 Render.hpp
 /home/ubuntu/MyWeb/include/Render.hpp
+RenderPool.hpp
+/home/ubuntu/MyWeb/include/RenderPool.hpp
 
 /home/ubuntu/MyWeb/src/Route.cc
 ../include/Route.hpp

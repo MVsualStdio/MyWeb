@@ -1,6 +1,6 @@
-.vscode
-static-My
-test
-./bench.sh
-./web
-hexo
+.vscode/
+static-My/
+test/
+bench.sh
+web
+build/
