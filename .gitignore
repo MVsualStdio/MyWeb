@@ -5,4 +5,4 @@ test/
 bench.sh
 web
 hexo/
-static
+static/
