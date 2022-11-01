@@ -12,9 +12,9 @@ include_directories(include)
 
 include_directories(background)
 
-set(MYSQLDIR ${PROJECT_SOURCE_DIR}/3rdparty/mysql-connector-c++-8.0.31)
-include_directories(${MYSQLDIR}/include)
-link_libraries(${MYSQLDIR}/lib64/libmysqlcppconn8.so)
+# set(MYSQLDIR ${PROJECT_SOURCE_DIR}/3rdparty/mysql-connector-c++-8.0.31)
+# include_directories(${MYSQLDIR}/include)
+# link_libraries(${MYSQLDIR}/lib64/libmysqlcppconn8.so)
 
 file(GLOB DIR_WEB_SRCS ./src/*.cc)
 message("${DIR_WEB_SRCS}")

@@ -1,8 +1,6 @@
-
 // #include "Http/HttpServer.hpp"
 // #include "Socket/Epolloop.hpp"
 #include "BlogIndex.hpp"
-#include "Login.hpp" 
 #include "Index.hpp"
 using namespace web;
 using namespace std;
@@ -11,7 +9,6 @@ using namespace std;
 
 
 int main(){
-    GetSql->addQuery("web","web_user","user_name","wang");
     WebSever web;
     //web.addSouce("image");
     //web.addRoute("/",Login::newPtr());
