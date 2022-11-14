@@ -9,6 +9,6 @@
 #include "Response.hpp"
 #include "Route.hpp"
 #include "WebServer.hpp"
-
+#include "WebConfig.hpp"
 
 #endif

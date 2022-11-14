@@ -13,7 +13,7 @@ cd hexo
 hexo clean
 hexo g
 cd ..
+cp ./static/images/favicon-32x32.png ./static/favicon.ico
 echo "========================================"
 echo "run web server:"
-# ./testResponse
 ./web

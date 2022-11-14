@@ -15,11 +15,12 @@ namespace Net{
             std::shared_ptr<Net::Tcpserver> tcp_;
             HttpCallback httpCallback_;
             std::shared_ptr<Epolloop> loop_;
+            int hopeMaxLen;
         public:
             virtual void onConnection(Connectserver* pCon);
             virtual void onMessage(Connectserver* pCon, Buffer* pBuf);
             virtual void onWriteComplate(Connectserver* pCon);
-            HttpServer(std::shared_ptr<Epolloop>);
+            HttpServer(std::shared_ptr<Epolloop>,int port,int numthread,int listLen);
             void start();
             void loop();
             void setHttpCallback(const HttpCallback& httpCallback){httpCallback_ = httpCallback;}

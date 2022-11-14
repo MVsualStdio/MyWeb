@@ -20,13 +20,11 @@ namespace Net{
     class Tcpserver : public ServerIO{
         #define MAX_EVENTS 500
         #define MAX_LISTEN_FD 5
-        #define LISTEN_PORT 6868
-        #define THREAD_NUM 2
         #define SOCKET_CREATE_ERROR -10
         #define EPOLL_ERROR -11
 
         public:
-            Tcpserver(std::shared_ptr<Epolloop> eloop);
+            Tcpserver(std::shared_ptr<Epolloop> eloop,int port,int numthread);
             void Tcpinit();
             ~Tcpserver();
             void serverRead();
@@ -42,6 +40,9 @@ namespace Net{
             std::shared_ptr<Epolloop> loop;
             Net::Channel* channel; 
             IMuduoUser* user; 
+            int port;
+            int numthread;
+
             // static std::thread::id mainThreadId;
     };
 }

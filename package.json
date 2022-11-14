@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "hexo-math": "^4.0.0",
+    "hexo-renderer-pandoc": "^0.3.1"
+  }
+}

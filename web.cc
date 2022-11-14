@@ -11,10 +11,11 @@ using namespace std;
 
 
 int main(){
-    GetSql->addQuery("web","web_user","user_name","wang");
     WebSever web;
+    // web.addRoute("/favicon.ico",Index::newPtr());
     //web.addSouce("image");
-    //web.addRoute("/",Login::newPtr());
+
+    web.addRoute("/secret/login",Login::newPtr());
     // web.addRoute("/",Index::newPtr());
     // web.addRoute("/archives/",Archives::newPtr());
     //web.addRoute("/blogIndex",BlogIndex::newPtr());

@@ -1,11 +1,11 @@
 #include "HttpResponse.hpp"
 
-void Net::HttpResponse::toBuffer(std::vector<std::shared_ptr<Buffer>>& buffers){
+void Net::HttpResponse::toBuffer(std::list<std::shared_ptr<Buffer>>& buffers,int listSize){
     char buf[32];
     
     snprintf(buf, sizeof buf, "HTTP/1.1 %d ", statusCode);
     std::shared_ptr<Buffer> buffer = std::make_shared<Buffer>();
-    int maxLen = buffer->maxLength(); 
+    
     buffer->append(buf);
     buffer->append(statusMessage);
     buffer->append("\r\n");
@@ -26,15 +26,14 @@ void Net::HttpResponse::toBuffer(std::vector<std::shared_ptr<Buffer>>& buffers){
     }
     buffer->append("\r\n");
     buffers.push_back(buffer);
-
-    for(int i=0;i<body.size()/maxLen+1;++i){
+    for(int i=0;i<body.size()/listSize+1;++i){
         std::shared_ptr<Buffer> body_buffer = std::make_shared<Buffer>();
-        if((i+1)*maxLen > body.size()){
-             body_buffer->append(std::string(body.begin()+i*maxLen,body.begin()+body.size()));
+        if((i+1)*listSize > body.size()){
+             body_buffer->append(std::string(body.begin()+i*listSize,body.begin()+body.size()));
         }
         else{
-            std::string snewstring(body.begin()+i*maxLen,body.begin()+(i+1)*maxLen);
-            body_buffer->append(std::string(body.begin()+i*maxLen,body.begin()+(i+1)*maxLen));
+            std::string snewstring(body.begin()+i*listSize,body.begin()+(i+1)*listSize);
+            body_buffer->append(std::string(body.begin()+i*listSize,body.begin()+(i+1)*listSize));
         }
         buffers.push_back(body_buffer);
     }

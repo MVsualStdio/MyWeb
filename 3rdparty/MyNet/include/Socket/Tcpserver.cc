@@ -3,12 +3,12 @@
 
 using namespace Net;
 //std::thread::id Tcpserver::mainThreadId;
-Tcpserver::Tcpserver(std::shared_ptr<Epolloop> eloop):
-    loop(eloop){
+Tcpserver::Tcpserver(std::shared_ptr<Epolloop> eloop,int eport,int enumthread):
+    loop(eloop),port(eport),numthread(enumthread){
         socketfd = createSocket();
         channel = new Channel(loop,socketfd);
         user = nullptr;
-        for(int i=0;i<THREAD_NUM;++i){
+        for(int i=0;i<numthread;++i){
             conloop[i] = std::make_shared<Epolloop>();
         }
         
@@ -19,7 +19,7 @@ Tcpserver::Tcpserver(std::shared_ptr<Epolloop> eloop):
 void Tcpserver::Tcpinit(){
     channel->setCallBack(this);
     channel->enableReading();
-    for(int i=0;i<THREAD_NUM;++i){
+    for(int i=0;i<numthread;++i){
         loopThread[i] = std::move(std::thread(&Epolloop::loop,conloop[i]));
     }
     
@@ -49,7 +49,7 @@ void Tcpserver::serverRead(){
                     << " accepted, Socket ID: "
                     << conn_fd;
         fcntl(conn_fd, F_SETFL, O_NONBLOCK);
-        conList[conn_fd] = std::shared_ptr<Connectserver>(new Connectserver(conn_fd,conloop[rand()%THREAD_NUM]));
+        conList[conn_fd] = std::shared_ptr<Connectserver>(new Connectserver(conn_fd,conloop[rand()%numthread]));
         //conList[conn_fd] = std::shared_ptr<Connectserver>(new Connectserver(conn_fd,loop));
         conList[conn_fd]->Coninit();
         conList[conn_fd]->setUser(user);
@@ -75,7 +75,7 @@ int Tcpserver::createSocket(){
     sockaddr_in server_addr;
     memset(&server_addr,0,sizeof(server_addr));
     server_addr.sin_family = AF_INET;
-    server_addr.sin_port = htons(LISTEN_PORT);
+    server_addr.sin_port = htons(port);
     server_addr.sin_addr.s_addr = htonl(INADDR_ANY);
     int ret = bind(socketfd,(sockaddr*)&server_addr,sizeof(server_addr));
     if(ret == -1){

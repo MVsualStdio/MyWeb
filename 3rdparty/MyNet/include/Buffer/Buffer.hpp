@@ -24,8 +24,8 @@ namespace Net
             int dataSize;
             static const char kCRLF[];
         public:
-            Buffer(int capacit=8,int maxCapacit=4096):readPos(0),writePos(0),\
-                                capacity(capacit),maxCapacity(maxCapacit),dataSize(capacity+1){
+            Buffer(int capacit=8):readPos(0),writePos(0),\
+                                capacity(capacit),dataSize(capacity+1){
                 buffer = new char[dataSize];
             };
             ~Buffer(){
@@ -45,7 +45,7 @@ namespace Net
             int readConnect(Connectserver* con);
             void clean();
             const char* findCRLF() const;
-            int maxLength();
+            // int maxLength();
         private:
             void ensureInsert(int length);
             void resize(int newcap);

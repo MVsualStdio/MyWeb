@@ -4,8 +4,8 @@
 
 using namespace Net;
 
-HttpServer::HttpServer(std::shared_ptr<Epolloop> loop):loop_(loop){
-    tcp_ = std::make_shared<Tcpserver>(loop);
+HttpServer::HttpServer(std::shared_ptr<Epolloop> loop,int port,int numthread,int listLen):loop_(loop),hopeMaxLen(listLen){
+    tcp_ = std::make_shared<Tcpserver>(loop,port,numthread);
 }
 
 HttpServer::~HttpServer(){
@@ -49,8 +49,8 @@ void HttpServer::onMessage(Connectserver* pCon, Buffer* pBuf){
 void HttpServer::onRequest(Connectserver* pCon, const HttpRequest& req){
     std::shared_ptr<Net::HttpResponse> response =  httpCallback_(req);
     if(response){
-        std::vector<std::shared_ptr<Buffer>> bufs;
-        response->toBuffer(bufs);
+        std::list<std::shared_ptr<Buffer>> bufs;
+        response->toBuffer(bufs,hopeMaxLen);
         for(auto& buf : bufs ){
             buf->writeConnect(pCon);
         }

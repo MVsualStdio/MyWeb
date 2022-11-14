@@ -10,9 +10,10 @@ void Buffer::ensureInsert(int length){
         return;
     }
     int min_cap_need = capacity + length;
-    if(min_cap_need > maxCapacity){
-        throw std::runtime_error("out of capacity");
-    }
+    // std::cout<<min_cap_need<<std::endl;
+    // if(min_cap_need > maxCapacity){
+    //     throw std::runtime_error("out of capacity");
+    // }
     int newcap = capacity + length;
     int doublecap = capacity*2;
     if(min_cap_need > doublecap){
@@ -20,15 +21,11 @@ void Buffer::ensureInsert(int length){
     }
     else{
         if(capacity < 1024){
-            newcap = doublecap <= maxCapacity ? doublecap : maxCapacity;
+            newcap = doublecap;
         }
         else{
             while(newcap < min_cap_need){
                 newcap += newcap/4;
-                if(newcap > maxCapacity){
-                    newcap = maxCapacity;
-                    break;
-                }
             }
         }
     }
@@ -190,6 +187,6 @@ void Buffer::retrieveUntil(const char* newRead){
     retrieve(len);
 }
 
-int Buffer::maxLength(){
-    return maxCapacity - capacity;
-}
+// int Buffer::maxLength(){
+//     return maxCapacity - capacity;
+// }

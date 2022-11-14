@@ -3,6 +3,7 @@
 #include <map>
 #include <string>
 #include <memory>
+#include <list>
 #include "../Buffer/Buffer.hpp"
 namespace Net{
     class HttpResponse{
@@ -25,7 +26,7 @@ namespace Net{
                 {header[key]=value;}
             void setBody(const std::string& _body)
                 {body=_body;}
-            void toBuffer(std::vector<std::shared_ptr<Buffer>>& buffer);
+            void toBuffer(std::list<std::shared_ptr<Buffer>>& buffer,int listSize);
             void setContentType(const std::string& type)
                 {addHeader("Content-Type", type);}
             void setStatusCode(HttpStatusCode code){statusCode = code;}

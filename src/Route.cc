@@ -6,7 +6,7 @@
 #include <dirent.h>
 #include <sys/stat.h>
 #include <sys/types.h>
-#include "Config.hpp"
+#include "WebConfig.hpp"
 #include <unistd.h>
 using namespace web;
 
@@ -50,9 +50,7 @@ bool Route::getAllFiles(const std::string& dir_in, std::vector<std::string>& fil
 
 
 Route::Route(){
-
     sourcePath = Config::SourceDir;
-    
     std::cout<<sourcePath<<std::endl;
 //    addStaticSource("css");
 //    addStaticSource("js");
@@ -66,7 +64,7 @@ void Route::addStaticSource(){
         for(auto& file:files){
             std::string loc(file);
             int pos = 0;
-            if(loc.substr(loc.size()-10,loc.size()) == "index.html"){
+            if(loc.size() >= 10 && loc.substr(loc.size()-10,loc.size()) == "index.html"){
                 addRoute("/"+loc.substr(0,loc.size()-10),Response::newPtr([this,loc,pos](Net::HttpRequest resp){return GetRender->SendHtml(loc);}));
                 //std::cout<<loc.substr(0,loc.size()-10)<<std::endl;
             }

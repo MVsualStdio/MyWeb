@@ -8,11 +8,12 @@ namespace
         namespace RenderType{
             
             enum ResponseType{
-                json
+                json,text
             };
 
             const std::map<ResponseType,std::string> ResponseTypeMap{
-                {ResponseType::json,"application/json"}
+                {ResponseType::json,"application/json"},
+                {ResponseType::text,"text/html"}
             };
 
             const std::unordered_map<std::string, std::string> SUFFIX_TYPE = {
