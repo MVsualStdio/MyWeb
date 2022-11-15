@@ -21,6 +21,8 @@ namespace Net{
             void push(T&& item);
             void push(const T& item);
             T pop();
+            int size();
+            void swap(queue<T>& temp);
     };
 
 
@@ -59,6 +61,19 @@ namespace Net{
         return res;
     }
 
+    template<class T>
+    int Queue<T>::size(){
+        unique_lock<mutex> locker(_mutex);
+        return _size;
+    }
+
+    template<class T>
+    void Queue<T>::swap(queue<T>& temp){
+        unique_lock<mutex> locker(_mutex);
+        Queue<T> s = temp;
+        temp  = _queue;
+        _queue - s;
+    }
 }
 
 #endif

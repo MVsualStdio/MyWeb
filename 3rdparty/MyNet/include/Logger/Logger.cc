@@ -1,82 +1,66 @@
-#include "./Logger.hpp"
-
+#include "NewLogger.hpp"
 
 using namespace Net;
 
-Logger::Logger(){
-    //Task* task =  new Task(writeThread);
-    std::thread(writeThread);
+const std::map<Logger::LEVEL, string> Logger::levelMap{
+    {Logger::LEVEL::MESSAGE, "[message]"},
+    {Logger::LEVEL::WARN, "[warn]"},
+};
 
-    auto time = chrono::system_clock::now();
-    time_t tm = chrono::system_clock::to_time_t(time);
-    string ts = ctime(&tm);
-    ts.resize(ts.size() - 1); 
-    std::string path;
-    path = getcwd(NULL,0);
-    std::cout<<"PATH"<<path<<std::endl;
-    string file = "../Log/"+ts+".log";
-    std::cout<<"Log File:"<<file<<std::endl;
-    os.open(file,ios::out|ios::app);
-
-    logstream = new LoggerStream(ss);
-}
-
-Logger::~Logger(){
-    flush();
-    os.close();
-    delete logstream;
-}
-
-void Logger::flush(){
-    if(!ss.str().empty()){
-        string buf = ss.str();
-        bufQue.push({_level,buf});
-        ss.str("");
-        os.flush();
-        logstream->flush();
-    }
-}
-
-Logger* Logger::instance(){
+Logger *Logger::instance()
+{
     static Logger logger;
     return &logger;
 }
 
-LoggerStream* Logger::steam(){
-     return logstream;
+void Logger::logInit(string dir, int count)
+{
+
+    dir_ = dir;
+    count_ = count;
+    auto time = chrono::system_clock::now();
+    time_t tm = chrono::system_clock::to_time_t(time);
+    string ts = ctime(&tm);
+    ts.resize(ts.size() - 1);
+    out_.open(dir_ + "/" + ts + ".log", ios::app);
+
+    std::shared_ptr<Task> task(new Task(&Logger::writeThread, this));
+    ThreadPool::instance()->addTask(task);
 }
 
-
-void Logger::setLevel(LEVEL level){
-    _level = level;
+template <class T, class... Args>
+void Logger::write_log(LEVEL level, const T &t, const Args &...args)
+{
+    std::shared_ptr<Buffer> s(new Buffer());
+    s->append(levelMap[level]);
+    p_write_log(s, t, args...);
+    bufferPool.push(s);
 }
 
-void Logger::writeThread(){
-    int currenLogNum = 0;
-    while(1){
-        auto res = bufQue.pop();
-        if(res.first == LEVEL::MESSAGE){
-            os << "[message] ";
-        }
+template <class T, class... Args>
+void Logger::p_write_log(std::shared_ptr<Buffer> s, const T &t, const Args &...args)
+{
+    s->append(t);
+    p_write_log(s, args...);
+}
 
-        if(res.first == LEVEL::WARN){
-            os << "[warnning] ";
-        }
+template <class T>
+void Logger::p_write_log(std::shared_ptr<Buffer> s, const T &t)
+{
+    s->append(t);
+}
 
-        auto time = chrono::system_clock::now();
-        time_t tm = chrono::system_clock::to_time_t(time);
-        string ts = ctime(&tm);
-	    ts.resize(ts.size() - 1); 
-        os << ts <<": ";
-        os << res.second << endl;
-        flush();
-        ++currenLogNum;
-        if(currenLogNum == 100000){
-            os.close();
-            string file = "./Log/"+ts+".log";
-            os.open(file,ios::out|ios::app);
-            currenLogNum = 0;
+void Logger::writeThread()
+{
+    while (1)
+    {
+        Net::Queue<std::shared_ptr<Net::Buffer>> temp;
+        bufferPool.swap(temp);
+        for(int i=0;i<temp.size();++i){
+            std::shared_ptr<Net::Buffer> b = temp.pop();
+            out_ << b->peek() << endl;
         }
-        sleep(2);
+        out_.flush();
+        sleep(1);
     }
 }

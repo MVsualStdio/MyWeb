@@ -1,6 +1,6 @@
 
 #include "Tcpserver.hpp"
-
+#include "../ThreadPool/ThreadPool.hpp"
 using namespace Net;
 //std::thread::id Tcpserver::mainThreadId;
 Tcpserver::Tcpserver(std::shared_ptr<Epolloop> eloop,int eport,int enumthread):
@@ -20,7 +20,9 @@ void Tcpserver::Tcpinit(){
     channel->setCallBack(this);
     channel->enableReading();
     for(int i=0;i<numthread;++i){
-        loopThread[i] = std::move(std::thread(&Epolloop::loop,conloop[i]));
+        std::shared_ptr<Task> task(new Task(&Epolloop::loop,conloop[i]));
+        ThreadPool::instance()->addTask(task);
+        // loopThread[i] = std::move(std::thread(&Epolloop::loop,conloop[i]));
     }
     
 }

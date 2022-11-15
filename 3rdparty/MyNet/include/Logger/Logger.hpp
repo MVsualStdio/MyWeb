@@ -1,17 +1,17 @@
 #ifndef LOGGER_H
 #define LOGGER_H
 
-#include "./LoggerStream.hpp"
 #include "../Queue/Queue.hpp"
 #include "../ThreadPool/ThreadPool.hpp"
 #include "../Task/Task.hpp"
+#include "../Buffer/Buffer.hpp"
 #include<string>
 #include<fstream>
 #include<sstream>
 #include<chrono>
 #include <sys/stat.h> 
 #include <sys/types.h>
-
+#include <map>
 namespace Net{
     using namespace std;
     class Logger{
@@ -19,25 +19,28 @@ namespace Net{
             enum LEVEL{
                 MESSAGE,WARN
             };
-            void setLevel(LEVEL level);
-            LoggerStream* steam();
+            
+            void logInit(string dir,int count);
             static Logger* instance();
+            template<class T,class ... Args>
+            void write_log(LEVEL level, const T& t,const Args&... args);
             ~Logger();
-            void flush();
+
         private:
-            LEVEL _level;
-            Queue<pair<LEVEL,string>> bufQue;
-            LoggerStream* logstream;
-            stringstream ss;
-            ofstream os;
+            template<class T,class ... Args> void p_write_log(std::shared_ptr<Buffer> s,const T& t,const Args&... args);
+            template<class T> void p_write_log(std::shared_ptr<Buffer> s,const T& t);
+            const static std::map<LEVEL,string> levelMap;
+            int count_;
+            string dir_;
+            ofstream out_;
+            std::mutex mutex_;
+            Queue<std::shared_ptr<Buffer>> bufferPool;
             Logger();
             void writeThread();
     };
-    #define LogDebug(level) Net::Logger::instance()->setLevel(level);\
-            *(Net::Logger::instance()->steam())
-    //  #define LogDebug(level) Net::Logger::instance()->flush(); \
-    //     Net::Logger::instance()->setLevel(level);\
-    //         *(Net::Logger::instance()->steam())
+    #define LogDebug
 }
   
 #endif
+
+
