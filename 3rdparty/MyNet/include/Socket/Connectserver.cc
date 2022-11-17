@@ -29,6 +29,7 @@ Connectserver::~Connectserver(){
 }
 
 void Connectserver::serverClose(){
+    LogMessage << socketfd << " is closed";
     if(channel){
         loop->delChannel(channel);
     }

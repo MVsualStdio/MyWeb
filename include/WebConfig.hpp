@@ -34,6 +34,8 @@ namespace web{
             static const int port;
             static const int numThread;
             static const int BufferMaxLen;
+            static const int LogCount;
+            static const string LogDir;
     };
 
 }

@@ -130,7 +130,7 @@ int Buffer::writeConnect(Connectserver* con,std::string msg){
 int Buffer::readConnect(Connectserver* con){
     int socketfd = con->getFd();
     if(socketfd < 0) {
-        LogDebug(Net::Logger::WARN) << "socket id minus error, errno: "<< errno;
+        LogWarn << "socket id minus error, errno: "<< errno;
         return -1;
     }
     char line[MAX_LINE];
@@ -146,7 +146,7 @@ int Buffer::readConnect(Connectserver* con){
 
     if(read_length < 0) {
         if(errno == ECONNRESET) {
-            LogDebug(Net::Logger::WARN) << "ECONNRESET error, closed: " << socketfd;
+            LogWarn << "ECONNRESET error, closed: " << socketfd;
             return -1;
         } 
     } 

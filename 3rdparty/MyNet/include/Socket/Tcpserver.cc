@@ -45,7 +45,7 @@ void Tcpserver::serverRead(){
     int client_len = sizeof(client_addr);
     int conn_fd = accept(socketfd, (sockaddr*)&client_addr, (socklen_t*)&client_len);
     if(conn_fd > 0) {
-        LogDebug(Net::Logger::MESSAGE) << "New Connection from: ["
+        LogMessage << "New Connection from: ["
                     << inet_ntoa(client_addr.sin_addr) << ':'
                     << ntohs(client_addr.sin_port) <<']'
                     << " accepted, Socket ID: "
@@ -58,7 +58,7 @@ void Tcpserver::serverRead(){
         conList[conn_fd]->connectEstablished(); 
     } 
     else {
-        LogDebug(Net::Logger::MESSAGE) <<  "accept error, errno" << errno;
+        LogWarn <<  "accept error, errno" << errno;
     }
 
 }
@@ -69,7 +69,7 @@ void Tcpserver::serverRead(){
 int Tcpserver::createSocket(){
     int socketfd = socket(AF_INET,SOCK_STREAM,0);
     if(socketfd == -1){
-        LogDebug(Net::Logger::WARN) << "socket create error";
+        LogWarn << "socket create error";
     }
     fcntl(socketfd,F_SETFL,O_NONBLOCK);
     int opt = 1;
@@ -81,11 +81,11 @@ int Tcpserver::createSocket(){
     server_addr.sin_addr.s_addr = htonl(INADDR_ANY);
     int ret = bind(socketfd,(sockaddr*)&server_addr,sizeof(server_addr));
     if(ret == -1){
-        LogDebug(Net::Logger::WARN) << "socket bind error";
+       LogWarn << "socket bind error";
     }
     ret = listen(socketfd,MAX_LISTEN_FD);
     if( ret == -1){
-        LogDebug(Net::Logger::WARN) << "socket listen error";
+        LogWarn << "socket listen error";
     }
     return socketfd;
 }

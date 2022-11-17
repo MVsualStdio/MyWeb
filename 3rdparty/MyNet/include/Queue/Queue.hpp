@@ -70,9 +70,7 @@ namespace Net{
     template<class T>
     void Queue<T>::swap(queue<T>& temp){
         unique_lock<mutex> locker(_mutex);
-        Queue<T> s = temp;
-        temp  = _queue;
-        _queue - s;
+        std::swap(_queue,temp);
     }
 }
 

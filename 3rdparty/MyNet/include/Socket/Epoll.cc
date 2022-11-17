@@ -57,7 +57,7 @@ void Epoll::wait(std::vector<Channel*>& channels,int time){
                 channels.emplace_back(cur_chan);
             } 
             else {
-                LogDebug(Net::Logger::MESSAGE) <<"fd" << fd << "not exist in fd2chan_";
+                LogMessage <<"fd" << fd << "not exist in fd2chan_";
             }
   }
 }

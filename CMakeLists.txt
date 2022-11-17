@@ -5,11 +5,13 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR})
 cmake_minimum_required(VERSION 3.1)
 
 add_subdirectory(3rdparty/MyNet)
+set(MY_NET_LIB LOGGER THREADPOOL MYSOCKET BUFFER HTTP)
+link_libraries(${MY_NET_LIB})
+
 include_directories(3rdparty)
 # add_subdirectory(3rdparty/mysql-connector-cpp)
 include_directories(3rdparty/MyNet/include)
 include_directories(include)
-
 include_directories(background)
 
 set(MYSQLDIR ${PROJECT_SOURCE_DIR}/3rdparty/mysql-connector-c++-8.0.31)
@@ -20,11 +22,8 @@ file(GLOB DIR_WEB_SRCS ./src/*.cc)
 message("${DIR_WEB_SRCS}")
 add_library(WEBLIB ${DIR_WEB_SRCS})
 
-
-set(MY_NET_LIB LOGGER THREADPOOL MYSOCKET BUFFER HTTP WEBLIB)
-
 add_executable(web ./web.cc)
-target_link_libraries(web ${MY_NET_LIB})
+target_link_libraries(web WEBLIB)
 
 
 # set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR})

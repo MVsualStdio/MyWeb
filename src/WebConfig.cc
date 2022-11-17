@@ -11,3 +11,5 @@ const json Config::data = json::parse(in);
 const int Config::port = Config::data["port"].get<int>();
 const int Config::numThread = Config::data["numThread"].get<int>();
 const int Config::BufferMaxLen = Config::data["BufferMaxLen"].get<int>();
+const int Config::LogCount = Config::data["LogCount"].get<int>();
+const string Config::LogDir = Config::data["LogDir"].get<string>();
