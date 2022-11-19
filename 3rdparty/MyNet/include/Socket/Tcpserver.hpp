@@ -13,6 +13,7 @@
 #include "./Channel.hpp"
 #include "./Epolloop.hpp"
 #include "./Connectserver.hpp"
+#include "../Timer/TimerManger.hpp"
 #include "unordered_map"
 #include <mutex>
 #include "IMuduoUser.hpp"
@@ -42,7 +43,7 @@ namespace Net{
             IMuduoUser* user; 
             int port;
             int numthread;
-
+            std::shared_ptr<TimerManger> timeManger;
             // static std::thread::id mainThreadId;
     };
 }

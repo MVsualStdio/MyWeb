@@ -34,8 +34,11 @@ namespace Net{
             template<typename  T,typename  ... Args> void p_write_log(std::stringstream& ss,const T& t,const Args&... args);
             template<typename  T> void p_write_log(std::stringstream& ss,const T& t);
             void mkLogFile();
+            string getLogDate();
+            void initFileName();
             const static std::unordered_map<LEVEL,string> levelMap;
             int count_;
+            string fileName;
             int curCount_;
             string dir_;
             ofstream out_;

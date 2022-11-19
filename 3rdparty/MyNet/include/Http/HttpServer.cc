@@ -59,7 +59,6 @@ void HttpServer::onRequest(Connectserver* pCon, const HttpRequest& req){
             pCon->serverClose();
         }
     }
-
 }
 
 void HttpServer::loop(){

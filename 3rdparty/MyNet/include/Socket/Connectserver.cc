@@ -4,8 +4,8 @@
 using namespace Net;
 
 
-Connectserver::Connectserver(int fd,std::shared_ptr<Epolloop> eloop):
-    socketfd(fd){
+Connectserver::Connectserver(int fd,std::shared_ptr<Epolloop> eloop,std::shared_ptr<TimerManger>timeManger):
+    socketfd(fd),timeManger_(timeManger){
         loop = eloop;
         channel = new Channel(loop,socketfd);
         user = nullptr;
@@ -22,6 +22,9 @@ void Connectserver::connectEstablished(){
 void Connectserver::Coninit(){
     channel->setCallBack(this);
     channel->enableReading();
+    std::shared_ptr<Task> task(new Task(&Connectserver::serverClose,this));
+    std::shared_ptr<TimeStamp> timeStamp(new TimeStamp(chrono::seconds(10),move(task),30,socketfd));
+    timeManger_->addTimer(timeStamp);
 }
 
 Connectserver::~Connectserver(){
@@ -51,10 +54,8 @@ void Connectserver::serverRead(){
     int length = buffer.readConnect(this);
     // std::cout<<buffer.peek()<<std::endl;
     // std::cout<<length<<std::endl;
-    if(length){
-        if(user){
-            user->onMessage(this,&buffer);
-        }
+    if(length && user){
+        user->onMessage(this,&buffer);
     }   
     else{
        serverClose();

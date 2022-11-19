@@ -17,12 +17,14 @@
 #include "../Buffer/Buffer.hpp"
 #include "IMuduoUser.hpp"
 #include "../Http/HttpContext.hpp"
+#include "../Timer/TimerManger.hpp"
+
 namespace Net{
     class Tcpserver;
     class Connectserver : public ServerIO{
         #define MAX_LINE 4096
         public:
-            explicit Connectserver(int fd,std::shared_ptr<Epolloop> eloop);
+            explicit Connectserver(int fd,std::shared_ptr<Epolloop> eloop,std::shared_ptr<TimerManger> timeManger);
             ~Connectserver();
             virtual void serverRead();
             virtual void serverWrite();
@@ -40,6 +42,7 @@ namespace Net{
             Net::Channel* channel; 
             IMuduoUser* user;
             Buffer buffer;
+            std::shared_ptr<TimerManger> timeManger_;
 
     };
 }

@@ -14,11 +14,10 @@ Epolloop::~Epolloop(){
  
 
 
-
 void Epolloop::loop(){
     while(1){
         std::vector<Net::Channel*> channels;
-        epoll->wait(channels);
+        epoll->wait(channels,1000);
         for(Net::Channel* c : channels){
             c->ChannelCallback();
             //std::cout<<std::this_thread::get_id()<<std::endl;

@@ -14,14 +14,8 @@ Logger *Logger::instance()
     return &logger;
 }
 
-void Logger::logInit(string dir, int count)
-{
-
-    dir_ = dir;
-    count_ = count;
-    bufferPool = make_shared<Queue<std::shared_ptr<Buffer>>>();
+string Logger::getLogDate(){
     auto time = chrono::system_clock::now();
-    
     time_t tm = chrono::system_clock::to_time_t(time);
     string ts = ctime(&tm); 
     int spaceCount = 0;
@@ -34,9 +28,19 @@ void Logger::logInit(string dir, int count)
             break;
         }
     }
+    return ts.assign(0+ts.begin(),t);
+}
 
-    mkLogFile();
 
+
+void Logger::logInit(string dir, int count)
+{
+
+    dir_ = dir;
+    count_ = count;
+    bufferPool = make_shared<Queue<std::shared_ptr<Buffer>>>();
+
+    initFileName();
     std::shared_ptr<Task> task(new Task(&Logger::writeThread, this));
     ThreadPool::instance()->addTask(task);
 }
@@ -57,6 +61,9 @@ void Logger::writeThread()
             temp.pop();
             out_ << string(b->peek(),b->end()) << endl;
         }
+
+        curCount_ = temp.size()+curCount_; 
+        // std::cout<<curCount_<<std::endl;
         out_.flush();
         sleep(1);
     }
@@ -67,44 +74,56 @@ Logger::~Logger(){
 }
 
 void Logger::mkLogFile(){
-    auto time = chrono::system_clock::now();
-    time_t tm = chrono::system_clock::to_time_t(time);
-    string ts = ctime(&tm); 
-    int spaceCount = 0;
-    auto t = ts.begin();
-    for(;t!=ts.end();++t){
-        if(*t == ' '){
-            ++spaceCount;
+
+    string ts = getLogDate();
+    struct stat buffer;   
+    int lognum = 0;
+    while(1){
+        fileName = dir_ + "/" + ts + "." + std::to_string(lognum) + ".log";
+        if(stat (fileName.c_str(), &buffer) == 0){
+            ++lognum;
         }
-        if(spaceCount == 3){
+        else{
+            break;
+        }
+    }
+    curCount_ = 0;
+    std::cout<<"fileName"<<fileName<<std::endl;
+    out_.close();
+    out_.open(fileName, ios::app);
+}
+
+
+void Logger::initFileName(){
+    string ts = getLogDate();
+    struct stat buffer;   
+    int lognum = 0;
+    while(1){
+        fileName = dir_ + "/" + ts + "." + std::to_string(lognum) + ".log";
+        if(stat (fileName.c_str(), &buffer) == 0){
+            ++lognum;
+        }
+        else{
             break;
         }
     }
 
-    string filename = dir_ + "/" + ts.assign(0+ts.begin(),t) + ".log";
-    ifstream ReadFile;
-	int n = 0;
-	string tmp;
-    int i = 1;
-    while(i){
-        ReadFile.open(filename, ios::in);//ios::in 表示以只读的方式读取文件  
-        if (ReadFile.fail()){
-            curCount_ =  0;
-        }
-        else{
-            while (getline(ReadFile, tmp, '\n')){
-                curCount_++;
-            }
-            ReadFile.close();
-        }
-
-        if(curCount_==0 ||  curCount_ <= count_){
-            out_.open(filename, ios::app);
-            break;
-        }
-        else{
-            filename = filename + "." + to_string(i) ;
-        }   
+    if(lognum == 0){
+        out_.open(fileName, ios::app);
+        curCount_ = 0;
     }
-	
+    else{
+        string oldfileName = dir_ + "/" + ts + "." + std::to_string(lognum-1) + ".log";
+        ifstream ReadFile(oldfileName);
+        string tmp;
+        while (getline(ReadFile, tmp, '\n')){
+			curCount_++;
+		}
+        if(curCount_ <= count_ ){
+            lognum = lognum -1;
+            fileName =  oldfileName;
+        }
+        out_.open(fileName, ios::app);
+    }
+    
 }

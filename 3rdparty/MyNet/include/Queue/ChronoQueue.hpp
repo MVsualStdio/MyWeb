@@ -19,24 +19,16 @@ namespace Net{
     using namespace std;
     class TimeStamp{
         public:
-            TimeStamp(chrono::time_point<chrono::high_resolution_clock> secondsTime,shared_ptr<WorkItem> task):\
-                    _secondsTime(secondsTime),_duration(0),_task(move(task)){
-            }
-            TimeStamp(chrono::time_point<chrono::high_resolution_clock> secondsTime,shared_ptr<WorkItem> task,chrono::seconds duration):\
-                    _secondsTime(secondsTime),_task(move(task)),_duration(duration){
-            }
-
-            // TimeStamp(TimeStamp&& timestamp){
-            //     this->_duration =  move(timestamp._duration);
-            //     this->_secondsTime = move(timestamp._secondsTime);
-            //     this->_task = move(timestamp._task);
-            //     timestamp = nullptr;
-            //     if(_task == nullptr){
-            //         cout<<"copy null"<<endl;
-            //     }
+            // TimeStamp(chrono::time_point<chrono::high_resolution_clock> secondsTime,shared_ptr<WorkItem> task):\
+            //         _secondsTime(secondsTime),_duration(0),_task(move(task)){
             // }
+            TimeStamp(chrono::seconds duration,shared_ptr<WorkItem> task,bool count):\
+                    _task(move(task)),_duration(duration),_count(count){
+            }
 
-             TimeStamp(const TimeStamp& timestamp){
+
+
+            TimeStamp(const TimeStamp& timestamp){
                 this->_duration =  timestamp._duration;
                 this->_secondsTime = timestamp._secondsTime;
                 this->_task = timestamp._task;
@@ -45,11 +37,12 @@ namespace Net{
                 }
             }
 
-
             bool operator<(const TimeStamp& b) const { return _secondsTime > b._secondsTime; }
+
             chrono::time_point<chrono::high_resolution_clock> getTimePoint(){
                 return _secondsTime;
             }
+
             chrono::seconds getDuration(){
                 return _duration;
             }
@@ -62,6 +55,7 @@ namespace Net{
             chrono::time_point<chrono::high_resolution_clock> _secondsTime;
             chrono::seconds _duration;
             shared_ptr<WorkItem> _task;
+            bool _count;
     };
 
     class ChronoQueue{

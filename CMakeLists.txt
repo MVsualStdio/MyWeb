@@ -5,7 +5,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR})
 cmake_minimum_required(VERSION 3.1)
 
 add_subdirectory(3rdparty/MyNet)
-set(MY_NET_LIB LOGGER THREADPOOL MYSOCKET BUFFER HTTP)
+set(MY_NET_LIB LOGGER THREADPOOL MYSOCKET BUFFER HTTP TIMER)
 link_libraries(${MY_NET_LIB})
 
 include_directories(3rdparty)

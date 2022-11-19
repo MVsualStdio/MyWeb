@@ -1,6 +1,7 @@
 
 #include "Tcpserver.hpp"
 #include "../ThreadPool/ThreadPool.hpp"
+
 using namespace Net;
 //std::thread::id Tcpserver::mainThreadId;
 Tcpserver::Tcpserver(std::shared_ptr<Epolloop> eloop,int eport,int enumthread):
@@ -11,8 +12,8 @@ Tcpserver::Tcpserver(std::shared_ptr<Epolloop> eloop,int eport,int enumthread):
         for(int i=0;i<numthread;++i){
             conloop[i] = std::make_shared<Epolloop>();
         }
-        
-    }
+    timeManger = std::make_shared<TimerManger>();
+}
 
 
 
@@ -24,7 +25,6 @@ void Tcpserver::Tcpinit(){
         ThreadPool::instance()->addTask(task);
         // loopThread[i] = std::move(std::thread(&Epolloop::loop,conloop[i]));
     }
-    
 }
 
 
@@ -51,7 +51,9 @@ void Tcpserver::serverRead(){
                     << " accepted, Socket ID: "
                     << conn_fd;
         fcntl(conn_fd, F_SETFL, O_NONBLOCK);
-        conList[conn_fd] = std::shared_ptr<Connectserver>(new Connectserver(conn_fd,conloop[rand()%numthread]));
+        conList[conn_fd] = std::shared_ptr<Connectserver>(new Connectserver(conn_fd,conloop[rand()%numthread],timeManger));
+        // std:shared_ptr<Task> timeTask(new Task(conList[conn_fd]->serverClose(),));
+        // timerManger.addTimer(make_shared<TimeStamp>(60,conList[conn_fd]),1));
         //conList[conn_fd] = std::shared_ptr<Connectserver>(new Connectserver(conn_fd,loop));
         conList[conn_fd]->Coninit();
         conList[conn_fd]->setUser(user);
