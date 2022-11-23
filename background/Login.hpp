@@ -21,7 +21,7 @@ namespace web{
             std::shared_ptr<Net::HttpResponse> ResRun(Net::HttpRequest req){
                 json response;
                 response["state"] = false;
-                
+
                 if(req.method() == HttpRequest::Method::kPost){
                     unordered_map<string,string> parsebody =  req.postBody();
                     response["name"] = parsebody["username"];

@@ -1,3 +1,5 @@
+## C++ simple Web Server
+
 ### http服务器
 #### 介绍：
 1. 拥有多个线程，一个TCP Accept,n个处理http读写任务线程,n可在config配置
@@ -14,6 +16,7 @@
 #### 环境：
 - Linux16.04 云服务器
 - cmake
+- Mysql8(可使用NOSQL版本)
 #### hexo配置
 1. 下载hexo到当前文件夹([hexo下载文档](https://hexo.io/zh-cn/docs/index.html))
     ```

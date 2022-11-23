@@ -16,7 +16,7 @@ mysqlx::abi2::r0::RowResult MysqlCon::getQueryResult(const std::string& db,const
 
 bool MysqlCon::addQuery(const std::string& db,const std::string& table,const std::string& id,const std::string & content){
     bool ret=false;
-    ;
+    
     mysqlx::abi2::r0::Table mytable = getTable(db,table);
 
     std::string query = id+"='" + content +"'";

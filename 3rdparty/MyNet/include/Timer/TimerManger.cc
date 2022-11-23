@@ -54,18 +54,14 @@ void TimerManger::waitTask(){
             if(diff <= 0.9){
                 timePool.pop_front();
                 ThreadPool::instance()->addTask(move(firstTime->getTask()));
-                std::cout<<"add task"<<firstTime->getFd()<<std::endl;
+                LogMessage <<"add task"<<firstTime->getFd();
                 break;
             }
             else{
                 _cond.wait_until(locker,firstTime->getTimePoint());
             }
-
         }
-
     }
-
-
 }
 
 
