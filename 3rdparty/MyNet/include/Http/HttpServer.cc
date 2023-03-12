@@ -26,24 +26,21 @@ void HttpServer::onWriteComplate(Connectserver* pCon){
 }
 
 void HttpServer::onMessage(Connectserver* pCon, Buffer* pBuf){
-    std::shared_ptr<HttpContext> context = pCon->getHttpState();
-    if(!context){
-        context = std::make_shared<HttpContext>();
-        pCon->setHttpState(context);
-    }
-    int ok = context->parseRequest(pBuf);
-    if(!ok){
-        pCon->serverClose();
-    }
-    else if(context->state()==HttpContext::HttpRequestParseState::kGotAll){
-        onRequest(pCon, context->request());
-        context->reset();
-    }
-    
-    // else{
-    //     std::cout<<"parse continue"<<std::endl;
-    // }
-    // std::cout<<std::this_thread::get_id()<<"    Http res"<<std::endl;
+    // do{
+        std::shared_ptr<HttpContext> context = pCon->getHttpState();
+        if(!context){
+            context = std::make_shared<HttpContext>();
+            pCon->setHttpState(context);
+        }
+        int ok = context->parseRequest(pBuf);
+        if(!ok){
+            pCon->serverClose();
+        }
+        else if(context->state()==HttpContext::HttpRequestParseState::kGotAll){
+            onRequest(pCon, context->request());
+            context->reset();
+        }
+    // }while(pCon->getChannel()->getEvent() | EPOLLET);
 }
 
 void HttpServer::onRequest(Connectserver* pCon, const HttpRequest& req){

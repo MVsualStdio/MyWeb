@@ -28,10 +28,12 @@ namespace web{
                     auto res = GetSql->getQueryResult("web","web_user","user_name",parsebody["username"]).fetchOne();
                     //  std::cout<<parsebody["username"]<<std::endl;
                     if(!res[2].isNull()  && res[2].get<string>() == parsebody["password"]){
-                        std::cout<<res[1].get<string>()<<"  "<<res[2].get<string>()<<std::endl;
+                        //std::cout<<res[1].get<string>()<<"  "<<res[2].get<string>()<<std::endl;
                         response["state"] = true;
                         // return GetRender->SendHtml("/secret/index.html");
                         // return GetRender->sendRedirect("/welcome.html");
+                    } else {
+                        response["state"] = false;
                     }
                 }
                 return GetRender->SendContent(response.dump(),RenderType::ResponseType::json);

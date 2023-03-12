@@ -35,6 +35,7 @@ namespace Net{
             void setHttpState(std::shared_ptr<HttpContext> state_){state =  state_;};
             void setUser(IMuduoUser* _user){user = _user;}
             void connectEstablished();
+            Net::Channel *getChannel(){return channel;}
         private:
             std::shared_ptr<HttpContext> state;
             int socketfd;

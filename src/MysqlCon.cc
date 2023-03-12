@@ -20,6 +20,7 @@ bool MysqlCon::addQuery(const std::string& db,const std::string& table,const std
     mysqlx::abi2::r0::Table mytable = getTable(db,table);
 
     std::string query = id+"='" + content +"'";
+    std::cout<< query <<std::endl;
     auto tableRes = mytable.select().where(query).execute().fetchOne();
     if(tableRes.isNull()){
         mytable.insert(id,"user_paswd").values(content,"123").execute();

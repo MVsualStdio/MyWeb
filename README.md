@@ -16,7 +16,14 @@
 #### 环境：
 - Linux16.04 云服务器
 - cmake
-- Mysql8(可使用NOSQL版本)
+- Mysql8
+- 可使用NOSQL版本,删除3rdparty的mysql,删除include/MysqlPool.hpp,src/MysqlPool.cc  
+    CMakeLists.txt
+    ```
+        set(MYSQLDIR ${PROJECT_SOURCE_DIR}/3rdparty/mysql-connector-c++-8.0.31)
+        include_directories(${MYSQLDIR}/include)
+        link_libraries(${MYSQLDIR}/lib64/libmysqlcppconn8.so)
+    ```
 #### hexo配置
 1. 下载hexo到当前文件夹([hexo下载文档](https://hexo.io/zh-cn/docs/index.html))
     ```

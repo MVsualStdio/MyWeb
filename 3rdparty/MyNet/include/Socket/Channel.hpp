@@ -25,6 +25,7 @@ namespace Net{
             void enableReading(){event |= EPOLLIN; update();}
             void enableWriting(){event |= EPOLLOUT; update();}
             void disableWriting(){event &= !EPOLLOUT;update();}
+            void etModel(){event |= EPOLLET; update();}
         private:
             int index;
             uint32_t reevent;

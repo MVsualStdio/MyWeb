@@ -9,6 +9,7 @@ Tcpserver::Tcpserver(std::shared_ptr<Epolloop> eloop,int eport,int enumthread):
         socketfd = createSocket();
         channel = new Channel(loop,socketfd);
         user = nullptr;
+        conloop = new std::shared_ptr<Epolloop>[numthread];
         for(int i=0;i<numthread;++i){
             conloop[i] = std::make_shared<Epolloop>();
         }
@@ -31,6 +32,7 @@ void Tcpserver::Tcpinit(){
 
 Tcpserver::~Tcpserver(){
     delete(channel);
+    delete(conloop);
 }
 
 
