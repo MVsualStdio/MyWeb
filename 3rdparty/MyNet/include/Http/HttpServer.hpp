@@ -11,7 +11,7 @@ namespace Net{
         public:
             using  HttpCallback = std::function<std::shared_ptr<Net::HttpResponse> (const HttpRequest&)>;
 
-        private:
+        protected:
             std::shared_ptr<Net::Tcpserver> tcp_;
             HttpCallback httpCallback_;
             std::shared_ptr<Epolloop> loop_;
@@ -25,9 +25,7 @@ namespace Net{
             void loop();
             void setHttpCallback(const HttpCallback& httpCallback){httpCallback_ = httpCallback;}
             ~HttpServer();
-        private:
-           
-            void onRequest(Connectserver*, const HttpRequest&);
+            virtual void onRequest(Connectserver*, const HttpRequest&);
     };
 }
 

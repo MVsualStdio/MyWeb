@@ -1,5 +1,5 @@
 {
-    "port":6868,
+    "port":6869,
     "numThread":2,
     "BufferMaxLen":4096,
     "LogCount":10000,

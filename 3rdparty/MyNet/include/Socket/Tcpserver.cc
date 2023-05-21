@@ -60,6 +60,7 @@ void Tcpserver::serverRead(){
         conList[conn_fd]->Coninit();
         conList[conn_fd]->setUser(user);
         conList[conn_fd]->connectEstablished(); 
+        
     } 
     else {
         LogWarn <<  "accept error, errno" << errno;

@@ -50,7 +50,6 @@ void Connectserver::serverWrite(){
 
 
 void Connectserver::serverRead(){
-
     int length = buffer.readConnect(this);
     // std::cout<<buffer.peek()<<std::endl;
     // std::cout<<length<<std::endl;

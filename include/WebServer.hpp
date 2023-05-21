@@ -22,14 +22,15 @@ namespace web{
         public:
         private:
             Route route_;
-            std::shared_ptr<Net::HttpResponse> onRequest(const HttpRequest& req);
+           
         public:
             WebSever();
                
             void start();
               
             void addRoute(string path, ResponseCall::Ptr res);
-                
+            
+             std::shared_ptr<Net::HttpResponse> onRequest(const HttpRequest& req);
             // void addSouce(string dir);
              
     };
