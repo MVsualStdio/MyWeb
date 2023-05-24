@@ -32,7 +32,9 @@ namespace Net{
             void serverWrite();
             void serverClose(){};
             void setUser(IMuduoUser* _user){user = _user;};
+            std::shared_ptr<TimerManger> getTimerManger(){return timeManger;};
             std::unordered_map<int,std::shared_ptr<Connectserver>> getConList(){return conList;};
+
         private:
             std::unordered_map<int,std::shared_ptr<Connectserver>> conList;
             int createSocket();

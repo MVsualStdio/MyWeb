@@ -53,7 +53,7 @@ void Tcpserver::serverRead(){
                     << " accepted, Socket ID: "
                     << conn_fd;
         fcntl(conn_fd, F_SETFL, O_NONBLOCK);
-        conList[conn_fd] = std::shared_ptr<Connectserver>(new Connectserver(conn_fd,conloop[rand()%numthread],timeManger));
+        conList[conn_fd] = std::shared_ptr<Connectserver>(new Connectserver(inet_ntoa(client_addr.sin_addr),ntohs(client_addr.sin_port),conn_fd,conloop[rand()%numthread],timeManger));
         // std:shared_ptr<Task> timeTask(new Task(conList[conn_fd]->serverClose(),));
         // timerManger.addTimer(make_shared<TimeStamp>(60,conList[conn_fd]),1));
         //conList[conn_fd] = std::shared_ptr<Connectserver>(new Connectserver(conn_fd,loop));

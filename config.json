@@ -1,7 +1,7 @@
 {
     "port":6869,
     "numThread":2,
-    "BufferMaxLen":4096,
+    "BufferMaxLen":65535,
     "LogCount":10000,
     "LogDir":"./Log"
 }

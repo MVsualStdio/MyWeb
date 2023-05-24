@@ -13,34 +13,68 @@
 #include "RenderPool.hpp"
 #include "WebConfig.hpp"
 #include "WebServer.hpp"
+#include "Buffer/Buffer.hpp"
+#include <list>
+
 using namespace std;
 
 namespace web{
+
     class ProxyNode : public Net::HttpServer{
+        private:
+            int HostFd;
+            // int my_read(int fd,void *buffer,int length) { 
+            //     int bytes_left; 
+            //     int bytes_read; 
+            //     char *ptr; 
+            //     bytes_left=length; 
+            //     while(bytes_left>0) 
+            //     { 
+            //         bytes_read=read(fd,ptr,bytes_read); 
+            //         if(bytes_read<0) 
+            //         { 
+            //         if(errno==EINTR) 
+            //             bytes_read=0; 
+            //         else 
+            //             return(-1); 
+            //         } 
+            //         else if(bytes_read==0) 
+            //             break; 
+            //         bytes_left-=bytes_read; 
+            //         ptr+=bytes_read; 
+            //     } 
+            //     return(length-bytes_left); 
+            // }
         public:
             ProxyNode(std::shared_ptr<Epolloop> epoll,int port,int numthread,int listLen):HttpServer(epoll,port,numthread,listLen){
+
+                HostFd = socket(AF_INET, SOCK_STREAM, 0);
+                struct sockaddr_in serv_addr;
+                memset(&serv_addr, 0, sizeof(serv_addr));  //每个字节都用0填充
+                serv_addr.sin_family = AF_INET;  //使用IPv4地址
+                serv_addr.sin_addr.s_addr = inet_addr("127.0.0.1");  //具体的IP地址
+                serv_addr.sin_port = htons(6868);  //端口
+                connect(HostFd, (struct sockaddr*)&serv_addr, sizeof(serv_addr));
+                cout<<"=============cc==============="<<endl;
+            }
+
+            virtual void onMessage(Connectserver* pCon, Buffer* pBuf) override{
                 
+                cout<<"send to Host...  "<<string(pBuf->peek())<<endl;
+                int l = pBuf->writeFd(HostFd);
+                //cout<<"send Len:"<<l<<endl;
+                cout<<"================================="<<endl;
+                //do{
+                std::shared_ptr<Buffer> bufRecive = make_shared<Buffer>(); 
+                l = bufRecive->readFd(HostFd);
+                cout<<"recive from Host...  Len:"<<l<<endl;
+                cout<<string(bufRecive->peek(),17)<<endl;
+                l = bufRecive->writeConnect(pCon);
+                cout<<"send to Client...  Len:"<<l<<endl;
+                //}while(l >= 4096);
+                cout<<"================end==============="<<endl;
             }
 
-            virtual void onRequest(Connectserver* pCon, const HttpRequest& req) override{
-                std::unordered_map<int,std::shared_ptr<Connectserver>> Connects = tcp_->getConList();
-
-                std::shared_ptr<Net::HttpResponse> response =  httpCallback_(req);
-            
-                for(auto Connect:Connects){
-                    if(response){
-                        std::list<std::shared_ptr<Buffer>> bufs;
-                        response->toBuffer(bufs,hopeMaxLen);
-                        for(auto& buf : bufs ){
-                            buf->writeConnect(Connect.second.get());
-                        }
-                        if (response->closeConnection()){
-                            pCon->serverClose();
-                        }
-                    }
-                }
-            }
-            // void addSouce(string dir);
              
     };
 
@@ -54,6 +88,7 @@ namespace web{
                 server.start();
                 server.loop();
             }
+
     };
 }
 

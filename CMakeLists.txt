@@ -25,7 +25,8 @@ add_library(WEBLIB ${DIR_WEB_SRCS})
 add_executable(web ./web.cc)
 target_link_libraries(web WEBLIB)
 
-
+# add_executable(client ./client.cc)
+# target_link_libraries(client WEBLIB)
 # set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR})
 # add_executable(testResponse ./test/testResponse.cc)
 # target_link_libraries(testResponse ${MY_NET_LIB})

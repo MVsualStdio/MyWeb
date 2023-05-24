@@ -42,7 +42,9 @@ namespace Net
             int writeBuffer(const char *data,int length);
             int writeConnect(Connectserver* con);
             int writeConnect(Connectserver* con,std::string msg);
+            int writeFd(int fd);
             int readConnect(Connectserver* con);
+            int readFd(int fd);
             void clean();
             const char* findCRLF() const;
             // int maxLength();

@@ -100,8 +100,7 @@ int Buffer::writeBuffer(const char* data,int length){
     return length;
 }
 
-int Buffer::writeConnect(Connectserver* con){
-    int fd = con->getFd();
+int Buffer::writeFd(int fd){
     int total_sent_num = 0;
     while (getUnreadSize() > 0) {
         int cur_send_len = writePos - readPos;
@@ -117,8 +116,13 @@ int Buffer::writeConnect(Connectserver* con){
         }
         readPos = readPos + writeNum;
         total_sent_num += writeNum;
-  }
-  return total_sent_num;
+    }
+    return total_sent_num;
+}
+
+int Buffer::writeConnect(Connectserver* con){
+    int fd = con->getFd();
+    return writeFd(fd);
 }
 
 int Buffer::writeConnect(Connectserver* con,std::string msg){
@@ -127,23 +131,22 @@ int Buffer::writeConnect(Connectserver* con,std::string msg){
     return writeNum;
 }
 
-int Buffer::readConnect(Connectserver* con){
-    int socketfd = con->getFd();
+int Buffer::readFd(int socketfd){
     if(socketfd < 0) {
         LogWarn << "socket id minus error, errno: "<< errno;
         return -1;
     }
+
     char line[MAX_LINE];
     bzero(line, MAX_LINE);
-    char buff[65535];
-    struct iovec iov[2];
-    iov[0].iov_base = line;
-    iov[0].iov_len = sizeof(line);
-    iov[1].iov_base = buff;
-    iov[1].iov_len = sizeof(buff);
+    // char buff[65535];
+    // struct iovec iov[2];
+    // iov[0].iov_base = line;
+    // iov[0].iov_len = sizeof(line);
+    // iov[1].iov_base = buff;
+    // iov[1].iov_len = sizeof(buff);
 
     ssize_t read_length = ::read(socketfd, line, MAX_LINE);
-
     if(read_length < 0) {
         if(errno == ECONNRESET) {
             LogWarn << "ECONNRESET error, closed: " << socketfd;
@@ -152,10 +155,16 @@ int Buffer::readConnect(Connectserver* con){
     } 
 
     writeBuffer(line,read_length);
-    if(read_length > MAX_LINE){
-        writeBuffer(buff,read_length-MAX_LINE);
-    }
-    return read_length;
+    // if(read_length > MAX_LINE){
+    //     writeBuffer(buff,read_length-MAX_LINE);
+    // }
+    
+    return read_length; 
+}
+
+int Buffer::readConnect(Connectserver* con){
+    int socketfd = con->getFd();
+    return readFd(socketfd);
 }
 
 

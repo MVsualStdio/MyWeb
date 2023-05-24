@@ -22,13 +22,15 @@
 namespace Net{
     class Tcpserver;
     class Connectserver : public ServerIO{
-        #define MAX_LINE 4096
+        #define MAX_LINE 65535
         public:
-            explicit Connectserver(int fd,std::shared_ptr<Epolloop> eloop,std::shared_ptr<TimerManger> timeManger);
+            explicit Connectserver(std::string ip,int port,int fd,std::shared_ptr<Epolloop> eloop,std::shared_ptr<TimerManger> timeManger);
             ~Connectserver();
             virtual void serverRead();
             virtual void serverWrite();
             int getFd(){ return socketfd;}
+            std::string getIp(){return ip;}
+            int getPort(){return port;}
             void serverClose();
             void Coninit();
             std::shared_ptr<HttpContext> getHttpState(){return state;};
@@ -44,7 +46,8 @@ namespace Net{
             IMuduoUser* user;
             Buffer buffer;
             std::shared_ptr<TimerManger> timeManger_;
-
+            std::string ip;
+            int port;
     };
 }
 

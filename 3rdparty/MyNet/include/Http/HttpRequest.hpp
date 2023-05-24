@@ -1,11 +1,13 @@
 #ifndef HTTPREQUEST_H
 #define HTTPREQUEST_H
-
+#include <list>
 #include <iostream>
 #include <map>
 #include <assert.h>
 #include <stdio.h>
 #include <unordered_map>
+#include <memory>
+#include "../Buffer/Buffer.hpp"
 
 namespace Net{
     using namespace std;
@@ -85,6 +87,10 @@ namespace Net{
         path_.assign(start, end);
     }
 
+    void setPath(string path){
+        path_ = path;
+    }
+
     const std::string& path() const{ 
         return path_; 
     }
@@ -92,6 +98,8 @@ namespace Net{
     void setQuery(const char* start, const char* end){
         query_.assign(start, end);
     }
+
+
 
     const std::string& query() const{ 
         return query_; 
@@ -133,6 +141,10 @@ namespace Net{
         headers_[field] = value;
     }
 
+    void addHeader(string key,string value){
+        headers_[key] = value;
+    }
+
     std::string getHeader(const string& field) const{
         string result;
         std::map<string, string>::const_iterator it = headers_.find(field);
@@ -154,6 +166,49 @@ namespace Net{
         headers_.swap(that.headers_);
     }
 
+    void toBuffer(std::list<std::shared_ptr<Buffer>>& buffers,int listSize){
+        char buf[120];
+        // GET / HTTP/1.1\r\n\r\n
+        snprintf(buf, sizeof buf, "%s %s HTTP/1.1 ",methodString(),path_.c_str());
+        std::shared_ptr<Buffer> buffer = std::make_shared<Buffer>();
+
+        buffer->append(buf);
+        buffer->append("\r\n");
+
+        if(method_ == kPost){
+            snprintf(buf, sizeof buf, "Content-Length: %zd\r\n", postbody_.size());
+            buffer->append(buf);
+        }
+
+        //buffer->append("Connection: Keep-Alive\r\n");
+        for (auto he : headers_)
+        {
+            buffer->append(he.first);
+            buffer->append(": ");
+            buffer->append(he.second);
+            buffer->append("\r\n");
+        }
+        buffer->append("\r\n");
+        if(method_ == kPost){
+            buffer->append(postbody_);
+        }
+        buffers.push_back(buffer);
+        // if(postbody_.size()>0){
+        //     for(int i=0;i<postbody_.size()/listSize+1;++i){
+        //         std::shared_ptr<Buffer> body_buffer = std::make_shared<Buffer>();
+        //         if((i+1)*listSize > postbody_.size()){
+        //             body_buffer->append(std::string(postbody_.begin()+i*listSize,postbody_.begin()+postbody_.size()));
+        //         }
+        //         else{
+        //             std::string snewstring(postbody_.begin()+i*listSize,postbody_.begin()+(i+1)*listSize);
+        //             body_buffer->append(std::string(postbody_.begin()+i*listSize,postbody_.begin()+(i+1)*listSize));
+        //         }
+        //         buffers.push_back(body_buffer);
+        //     }   
+        // }
+       
+    }
+
     private:
         Method method_;
         Version version_;
@@ -161,6 +216,7 @@ namespace Net{
         std::string query_;
         std::map<std::string, std::string> headers_;
         std::string postbody_;
+    
     };
 
 }  // namespace net
