@@ -12,9 +12,9 @@ using namespace std;
 void webStart(){
     WebSever web;
     web.addRoute("/secret/login",Login::newPtr());
-    shared_ptr<Proxy> Ptr(new Proxy());
-    Ptr->ProxyInitHost("127.0.0.1",6869);
-    web.addRoute("/proxy",Ptr);
+    // shared_ptr<Proxy> Ptr(new Proxy());
+    // Ptr->ProxyInitHost("127.0.0.1",6869);
+    // web.addRoute("/proxy",Ptr);
     web.start();
 }
 

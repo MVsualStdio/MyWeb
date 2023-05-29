@@ -32,3 +32,16 @@ target_link_libraries(web WEBLIB)
 # target_link_libraries(testResponse ${MY_NET_LIB})
 
 # add_executable(testSql ./test/testSql.cc)
+
+# =================================================
+FIND_PACKAGE(Boost 1.82.0 REQUIRED COMPONENTS system thread regex)
+
+IF(Boost_FOUND)
+    INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
+    LINK_DIRECTORIES(${Boost_LIBRARY_DIRS})
+    message("Boost include:${Boost_INCLUDE_DIRS}")
+    message("Boost lib:${Boost_LIBRARY_DIRS}")
+ENDIF(Boost_FOUND)
+SET(USED_LIBS ${Boost_SYSTEM_LIBRARY} ${Boost_THREAD_LIBRARY} ${Boost_REGEX_LIBRARY})
+ADD_EXECUTABLE(proxy proxy.cc)
+TARGET_LINK_LIBRARIES(proxy ${USED_LIBS})
